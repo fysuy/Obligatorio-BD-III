@@ -1,4 +1,4 @@
-package Logica;
+package obligatorio.consola;
 
 public class main {
 
