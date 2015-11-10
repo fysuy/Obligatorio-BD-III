@@ -1,6 +1,5 @@
 package obligatorio.persistencia.daos;
 
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import com.mysql.jdbc.Statement;
 public class DaoDueños {
 	
 	 public DaoDueños (){
-		 
+		 super();
 	 } 
 	 
 	 public boolean member (IConexion ic, int ci) throws SQLException {
@@ -41,7 +40,6 @@ public class DaoDueños {
 		
 		return existe;
 	 }
-	 
 	 
 	 public int insert (IConexion ic, Dueño dueño) throws SQLException {		 
 		Connection con = ic.getCon();
@@ -97,7 +95,6 @@ public class DaoDueños {
 		pstmt.close();
 		con.close();
 	 }
-	 
 	 
 	 public List<VODueño> listarDueños(IConexion ic) throws SQLException{
 		 Connection con = ic.getCon();
