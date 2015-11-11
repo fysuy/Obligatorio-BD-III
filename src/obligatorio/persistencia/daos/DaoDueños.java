@@ -15,9 +15,11 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
 public class DaoDueños {
+	 private DaoMascotas mascotas;
 	
 	 public DaoDueños (){
 		 super();
+		 this.mascotas = null;
 	 } 
 	 
 	 public boolean member (IConexion ic, int ci) throws SQLException {
