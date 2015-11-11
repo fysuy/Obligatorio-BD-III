@@ -35,7 +35,7 @@ public class Consultas {
 	/* CONSULTAS MASCOTAS */
 	
 	public String listarMascotas(){
-		String query= "SELECT * FROM Mascotas";
+		String query = "SELECT * FROM Mascotas where cedulaDueño = (?)";
 		return query;
 	}
 	

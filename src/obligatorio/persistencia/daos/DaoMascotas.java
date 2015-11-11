@@ -14,9 +14,10 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
 public class DaoMascotas {
+	private int cedulaDueño;
 		 
 	public DaoMascotas (int cedulaDueño){
-		 
+		 this.cedulaDueño = cedulaDueño;
 	}	 
 		 
 	public boolean member (IConexion ic, String apodo) throws SQLException{
@@ -40,7 +41,6 @@ public class DaoMascotas {
 	}		 
 		 
 	 public int insert (IConexion ic, int cedulaDueño, String apodo, String raza) throws SQLException {
-				
 		Connection con = ic.getCon();
 		Consultas consultas = new Consultas();
 		String insert = consultas.insertarDueño();
@@ -78,13 +78,14 @@ public class DaoMascotas {
 		String queryLista = consultas.listarMascotas();
 		Statement stmt = (Statement) con.createStatement();
 		ResultSet rs = stmt.executeQuery(queryLista);
+		
 	 
 		while(rs.next()){
 			String apodo = rs.getString("apodo");
 			String raza = rs.getString("raza");
 			int ci = rs.getInt("ci");
 			
-			VOMascota pet = new VOMascota(apodo,raza,ci);
+			VOMascota pet = new VOMascota(apodo, raza, ci);
 			lista.add(pet);			  
 		}
 					

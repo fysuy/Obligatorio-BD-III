@@ -5,13 +5,12 @@ import java.sql.SQLException;
 
 import obligatorio.logica.valueObjects.VODueño;
 import obligatorio.logica.valueObjects.VOMascota;
-import obligatorio.persistencia.AccesoBD;
 import obligatorio.persistencia.daos.DaoDueños;
 
 import com.mysql.jdbc.Connection;
 
 public class Fachada {
-	
+	/*
 	private String driver = "com.mysql.jdbc.Driver";
 	private String url = "jdbc:mysql://localhost:3306";
 	private String user = "root";
@@ -44,7 +43,7 @@ public class Fachada {
 	}
 
 
-
+*/
 
 
 
