@@ -1,14 +1,11 @@
 package obligatorio.logica;
 
 import java.io.IOException;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import obligatorio.logica.valueObjects.*;
 import obligatorio.persistencia.daos.*;
 import obligatorio.util.*;
-
-import com.mysql.jdbc.Connection;
 
 public class Fachada {
    private static Fachada instance = null;
@@ -45,13 +42,22 @@ public class Fachada {
 		}
 	}
 	
-	public void nuevaMascota(VOMascota mascota) throws SQLException{
-		String apodo = mascota.getApodo();
-		int ced = mascota.getCedulaDueño();
-		String raza = mascota.getRaza();
-		Connection con = (Connection) DriverManager.getConnection
-				(url, user, password);
-		AccesoBD abd = new AccesoBD ();	
-	}
+   public void nuevaMascota(VOMascota pMascota) throws SQLException {
+		String apodo = pMascota.getApodo();
+		int cedulaDueño = pMascota.getCedulaDueño();
+		String raza = pMascota.getRaza();
+		
+		IConexion icon = pool.obtenerConexion(true);
+		
+		Dueño dueño = dueños.find(icon, cedulaDueño);
+		Mascota mascota = new Mascota(raza, apodo);
+		
+		try {
+			dueño.addMascota(mascota);
+			pool.liberarConexion (icon, true);
+		} catch (Exception e) {
+			pool.liberarConexion (icon, true);
+		}
+   }
 }
 

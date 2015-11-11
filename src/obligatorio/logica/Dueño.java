@@ -1,5 +1,7 @@
 package obligatorio.logica;
 
+import obligatorio.persistencia.daos.DaoMascotas;
+
 public class Dueño {
 	private int cedula;
 	private String nombre;
@@ -34,5 +36,9 @@ public class Dueño {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+
+	public void addMascota(Mascota mascota) {
+		// TODO Auto-generated method stub
 	}
 }

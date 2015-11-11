@@ -31,7 +31,6 @@ public class Consultas {
 		return delete;
 	}
 	
-	
 	/* CONSULTAS MASCOTAS */
 	
 	public String listarMascotas(){
@@ -54,6 +53,4 @@ public class Consultas {
 		String boom = "Delete from Mascotas ";
 		return boom;
 	}
-	
-
 }

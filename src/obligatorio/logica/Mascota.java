@@ -5,11 +5,10 @@ public class Mascota {
 	private String apodo;
 	private int cedulaDueño;
 	
-	public Mascota(String raza, String apodo, int cedulaDueño) {
+	public Mascota(String raza, String apodo) {
 		super();
 		this.raza = raza;
 		this.apodo = apodo;
-		this.cedulaDueño = cedulaDueño;
 	}
 	
 	public String getRaza() {
@@ -26,13 +25,5 @@ public class Mascota {
 	
 	public void setApodo(String apodo) {
 		this.apodo = apodo;
-	}
-	
-	public int getCedulaDueño() {
-		return cedulaDueño;
-	}
-	
-	public void setCedulaDueño(int cedulaDueño) {
-		this.cedulaDueño = cedulaDueño;
 	}
 }
