@@ -2,6 +2,7 @@ package obligatorio.logica;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import obligatorio.logica.exceptions.ExceptionsDueños;
 import obligatorio.logica.valueObjects.*;
@@ -52,14 +53,14 @@ public class Fachada {
 		String raza = pMascota.getRaza();
 		
 		IConexion icon = pool.obtenerConexion(true);
-		if(dueños.member(icon,cedulaDueño))
+		if(dueños.member(icon, cedulaDueño))
 		{
 			Dueño dueño = dueños.find(icon, cedulaDueño);
 			
 			Mascota mascota = new Mascota(raza, apodo);
 			
 			try {
-				dueño.addMascota(mascota);
+				dueño.addMascota(icon, mascota);
 				pool.liberarConexion (icon, true);
 			} catch (Exception e) {
 				pool.liberarConexion (icon, true);
@@ -70,5 +71,31 @@ public class Fachada {
 			throw new ExceptionsDueños("Error: no existe dueño");
 		}
    }
+   
+	public List<VODueño> listarDueños() throws SQLException {
+		IConexion icon = pool.obtenerConexion(true);
+		return dueños.listarDueños(icon);
+	}
+	
+	public List<VOMascota> listarMascotas(int cedulaDueño) throws SQLException, ExceptionsDueños {
+		IConexion icon = pool.obtenerConexion(true);
+		
+		if (dueños.member(icon, cedulaDueño)) {
+			return dueños.find(icon, cedulaDueño).listarMascotas(icon);			
+		} else {
+			throw new ExceptionsDueños("Error: no existe dueño");
+		}
+	}
+	
+	public void borrarDueñoMascotas(int cedulaDueño) throws SQLException, ExceptionsDueños {
+		IConexion icon = pool.obtenerConexion(true);
+		
+		if (dueños.member(icon, cedulaDueño)) {
+			dueños.find(icon, cedulaDueño).borrarMascotas(icon);
+			dueños.delete(icon, cedulaDueño);
+		} else {
+			throw new ExceptionsDueños("Error: no existe dueño");
+		}
+	}
 }
 

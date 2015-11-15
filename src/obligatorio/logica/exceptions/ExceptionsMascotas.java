@@ -1,4 +1,5 @@
 package obligatorio.logica.exceptions;
+
 import java.io.Serializable;
 
 public class ExceptionsMascotas  extends Exception implements Serializable{
@@ -9,5 +10,4 @@ public class ExceptionsMascotas  extends Exception implements Serializable{
 	{
 		super(msj);
 	}
-
 }

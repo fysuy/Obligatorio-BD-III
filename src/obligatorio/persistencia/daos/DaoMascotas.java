@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import obligatorio.logica.Mascota;
 import obligatorio.logica.valueObjects.*;
 import obligatorio.persistencia.consultas.Consultas;
 import obligatorio.util.IConexion;
@@ -40,14 +41,14 @@ public class DaoMascotas {
 		return existe;	 
 	}		 
 		 
-	 public int insert (IConexion ic, int cedulaDueño, String apodo, String raza) throws SQLException {
+	 public int insert (IConexion ic, Mascota mascota) throws SQLException {
 		Connection con = ic.getCon();
 		Consultas consultas = new Consultas();
 		String insert = consultas.insertarDueño();
 		
 		PreparedStatement pstmt = (PreparedStatement) con.prepareStatement(insert);
-		pstmt.setString(1, apodo);
-		pstmt.setString(2, raza);
+		pstmt.setString(1, mascota.getApodo());
+		pstmt.setString(2, mascota.getRaza());
 		pstmt.setInt(3, cedulaDueño);
 		int rs = pstmt.executeUpdate();
 		

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package obligatorio.logica.exceptions;
 
 import java.io.Serializable;
@@ -13,5 +10,4 @@ public class ExceptionsDueños  extends Exception implements Serializable{
 	{
 		super(msj);
 	}
-
 }

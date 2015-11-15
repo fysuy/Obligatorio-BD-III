@@ -5,7 +5,7 @@ public class Consultas {
 	/* CONSULTAS DUEÑOS */
 	 
 	public String listarDueños(){
-		String query= "SELECT * FROM Dueños";
+		String query = "SELECT * FROM Dueños";
 		return query;
 	}
 	
@@ -50,7 +50,7 @@ public class Consultas {
 	}
 	
 	public String booMascotas(){
-		String boom = "Delete from Mascotas ";
-		return boom;
+		String delete = "Delete from Mascotas ";
+		return delete;
 	}
 }
