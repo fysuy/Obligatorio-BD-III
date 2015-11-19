@@ -7,7 +7,6 @@ import java.util.Properties;
 
 import com.mysql.jdbc.Connection;
 
-
 public class PoolConexiones implements IPoolConexiones {
 	
 	private String driver;
@@ -15,12 +14,12 @@ public class PoolConexiones implements IPoolConexiones {
 	private String user;
 	private String password;
 	
-	private int nivelTransaccionalidad;
+	private int nivelTransaccionalidad = Connection.TRANSACTION_SERIALIZABLE;
 	
-	private int tope = 5;
-	private int tamanio = 0;
-	private int creadas = 0;
-	private Connection [] conexiones;
+	private int tope;
+	private int tamanio;
+	private int creadas;
+	private IConexion [] conexiones;
 
 	public PoolConexiones() throws IOException, ClassNotFoundException {
 		super();
@@ -30,37 +29,52 @@ public class PoolConexiones implements IPoolConexiones {
 		
 		p.load(new FileInputStream(nomArch));
 		
-		this.url = p.getProperty("url");
-		this.user = p.getProperty("user");
-		this.password = p.getProperty("password");
+		this.url = p.getProperty("persistencia.url");
+		this.user = p.getProperty("persistencia.user");
+		this.password = p.getProperty("persistencia.password");
+		this.tamanio = Integer.parseInt(p.getProperty("persistencia.tamanio"));
+		this.tope = 0;
+		this.creadas = 0;
 		
 		Class.forName(driver);
 	}
 
 	public IConexion obtenerConexion(boolean modifica) throws InterruptedException, SQLException {
-		while(this.tamanio == this.tope) {
+		while(this.creadas == this.tamanio && this.tope == 0) {
 			wait();
 		}
 		
-		Conexion con;
+		IConexion con;
 		
-		if(this.conexiones[this.tamanio] == null) {
+		if(this.creadas < this.tamanio) {
 			Connection aux = (Connection) DriverManager.getConnection(url, user, password);
+			aux.setTransactionIsolation(nivelTransaccionalidad);
+			aux.setAutoCommit(false);
+			
 			con = new Conexion(aux);
 			this.creadas++;
 		} else {
-			con = new Conexion(this.conexiones[this.tamanio]);
+			con = this.conexiones[this.tope-1];
+			this.conexiones[this.tope-1] = null;
+			this.tope--;
 		}
-		
-		this.tamanio++;
 		
 		return con;
 	}
 
-	public void liberarConexion(IConexion ic, boolean ok) {
-		// TODO: ok???? para q es ese parametro
-		ic.closeCon();
-		this.tamanio--;
+	public void liberarConexion(IConexion ic, boolean ok) {		
+		try {
+			if(ok) {
+				ic.getCon().commit();
+			} else {
+				ic.getCon().rollback();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		this.conexiones[this.tope] = ic;
+		this.tope++;
 		notify();
 	}
 }
