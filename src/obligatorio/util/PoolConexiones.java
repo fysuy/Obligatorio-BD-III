@@ -65,9 +65,9 @@ public class PoolConexiones implements IPoolConexiones {
 	public void liberarConexion(IConexion ic, boolean ok) {		
 		try {
 			if(ok) {
-				ic.getCon().commit();
+				((Conexion)ic).getCon().commit();
 			} else {
-				ic.getCon().rollback();
+				((Conexion)ic).getCon().rollback();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
