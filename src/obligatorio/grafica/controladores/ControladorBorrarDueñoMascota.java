@@ -3,7 +3,6 @@ package obligatorio.grafica.controladores;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import obligatorio.grafica.ventanas.VentanaBorrarDueñoMascotas;
 import obligatorio.logica.Fachada;
 import obligatorio.logica.exceptions.ExceptionsDueños;
 

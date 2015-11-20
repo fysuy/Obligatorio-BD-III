@@ -8,9 +8,9 @@ import java.util.List;
 import obligatorio.logica.Mascota;
 import obligatorio.logica.valueObjects.*;
 import obligatorio.persistencia.consultas.Consultas;
+import obligatorio.util.Conexion;
 import obligatorio.util.IConexion;
 
-import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
@@ -22,13 +22,12 @@ public class DaoMascotas {
 	}	 
 		 
 	public boolean member (IConexion ic, String apodo) throws SQLException{
-		Connection con = ic.getCon();
 		boolean existe = false;
 		Consultas consultas = new Consultas();
 		
 		String query = consultas.existeMascota();
 		
-		PreparedStatement pstmt = (PreparedStatement) con.prepareStatement(query);
+		PreparedStatement pstmt = (PreparedStatement) ((Conexion)ic).getCon().prepareStatement(query);
 		pstmt.setString (1, apodo);
 		ResultSet rs = pstmt.executeQuery();
 		if(rs.next())
@@ -36,48 +35,42 @@ public class DaoMascotas {
 		
 		rs.close();
 		pstmt.close();
-		con.close();
 		
 		return existe;	 
 	}		 
 		 
 	 public int insert (IConexion ic, Mascota mascota) throws SQLException {
-		Connection con = ic.getCon();
 		Consultas consultas = new Consultas();
 		String insert = consultas.insertarDueño();
 		
-		PreparedStatement pstmt = (PreparedStatement) con.prepareStatement(insert);
+		PreparedStatement pstmt = (PreparedStatement) ((Conexion)ic).getCon().prepareStatement(insert);
 		pstmt.setString(1, mascota.getApodo());
 		pstmt.setString(2, mascota.getRaza());
 		pstmt.setInt(3, cedulaDueño);
 		int rs = pstmt.executeUpdate();
 		
 		pstmt.close();
-		con.close();
 			
 		return rs;
 	}
 		 
 	public void borrarMascotas (IConexion ic) throws SQLException {
-		Connection con = ic.getCon();
 		Consultas consultas = new Consultas();
 			
 		String delete = consultas.booMascotas();
-		Statement stmt = (Statement) con.createStatement();
+		Statement stmt = (Statement) ((Conexion)ic).getCon().createStatement();
 		stmt.executeQuery(delete);
 		
 		stmt.close();
-		con.close();
 	}
 	
 	public List <VOMascota> listarMascotas(IConexion ic) throws SQLException {
-		Connection con = ic.getCon();
 		Consultas consultas = new Consultas();
 		 
 		List <VOMascota> lista = new ArrayList<VOMascota>();
 		 
 		String queryLista = consultas.listarMascotas();
-		Statement stmt = (Statement) con.createStatement();
+		Statement stmt = (Statement) ((Conexion)ic).getCon().createStatement();
 		ResultSet rs = stmt.executeQuery(queryLista);
 		
 	 
