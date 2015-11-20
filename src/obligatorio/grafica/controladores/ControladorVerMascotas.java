@@ -1,18 +1,23 @@
 package obligatorio.grafica.controladores;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import obligatorio.logica.Fachada;
+import obligatorio.logica.exceptions.ExceptionsDueños;
 import obligatorio.logica.valueObjects.VOMascota;
 
 public class ControladorVerMascotas {
 
 	
-	public Object[][] listarMascotas(int cedula) {
+	public Object[][] listarMascotas(int cedula) throws SQLException, ExceptionsDueños, IOException {
 		
 		Object[][] data = null;
 		
 		// VOMascota[] mascotas = {} ;
 		
-		VOMascota[] mascotas = {new VOMascota("Salchicha", "Pipe", 1234567)} ;
-		// VOMascota[] mascotas = (VOMascota[]) Fachada.getInstance().listarMascotas(cedula).toArray();
+//		VOMascota[] mascotas = {new VOMascota("Salchicha", "Pipe", 1234567)} ;
+		VOMascota[] mascotas = (VOMascota[]) Fachada.getInstance().listarMascotas(cedula).toArray();
 		
 		if (mascotas.length != 0) {
 			
@@ -22,13 +27,14 @@ public class ControladorVerMascotas {
 				data [i][0] = new String(mascotas[i].getApodo());
 				data [i][1] = new String(mascotas[i].getRaza());
 				data [i][2] = new Integer(mascotas[i].getCedulaDueño());
-			}			
+			}
+			
 		} else {
 			
 			data = new Object[1][3];
-			data [0][0] = "Vacio";
-			data [0][1] = "Vacio";
-			data [0][2] = "Vacio";
+			data [0][0] = "";
+			data [0][1] = "";
+			data [0][2] = "";
 		}
 		
 		return data;

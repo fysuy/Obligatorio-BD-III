@@ -7,15 +7,23 @@ import javax.swing.*;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import obligatorio.grafica.controladores.ControladorVerMascotas;
+import obligatorio.logica.exceptions.ExceptionsDueños;
 
 public class VentanaVerMascotas {
 
 	private JFrame frame;
-	private ControladorVerMascotas controladorVentanaMascotas;
-	private JTextField textField;
-	
+	private Object[][] data;
+	private ControladorVerMascotas controlador;
+	private JTextField textFieldCedulaDueño;
+	private SpringLayout sl_panel;
+	private JPanel panel;
+	private JLabel labelCedulaDueño;
 
 	/**
 	 * Launch the application.
@@ -45,7 +53,7 @@ public class VentanaVerMascotas {
 	 */
 	private void initialize() {
 		
-		controladorVentanaMascotas = new ControladorVerMascotas();
+		
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 552, 315);
@@ -53,9 +61,9 @@ public class VentanaVerMascotas {
 		frame.setAlwaysOnTop(true);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		SpringLayout sl_panel = new SpringLayout();
+		sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
 		JLabel labelTitulo = new JLabel("Mascotas");
@@ -67,41 +75,81 @@ public class VentanaVerMascotas {
 		labelTitulo.setFont(new Font("Tahoma", Font.PLAIN, 34));
 		
 		
-		String[] columnas = { "APODO", "RAZA", "CI DUEÑO" };
 		
-		// FIXME: Rodear con try catch
 		
-		int cedula = 1234567;
-		Object[][] data = controladorVentanaMascotas.listarMascotas(cedula);
-		
-		JTable tableMascotas = new JTable(data, columnas);
-		tableMascotas.getTableHeader().setReorderingAllowed(false);
-		
-		JLabel labelCedulaDueño = new JLabel("CI del due\u00F1o");
+		labelCedulaDueño = new JLabel("CI del due\u00F1o");
 		sl_panel.putConstraint(SpringLayout.NORTH, labelCedulaDueño, 20, SpringLayout.SOUTH, labelTitulo);
 		sl_panel.putConstraint(SpringLayout.WEST, labelCedulaDueño, 20, SpringLayout.WEST, panel);
 		panel.add(labelCedulaDueño);
 		
-		textField = new JTextField();
-		sl_panel.putConstraint(SpringLayout.NORTH, textField, -3, SpringLayout.NORTH, labelCedulaDueño);
-		sl_panel.putConstraint(SpringLayout.WEST, textField, 20, SpringLayout.EAST, labelCedulaDueño);
-		panel.add(textField);
-		textField.setColumns(32);
+		textFieldCedulaDueño = new JTextField();
+		sl_panel.putConstraint(SpringLayout.NORTH, textFieldCedulaDueño, -3, SpringLayout.NORTH, labelCedulaDueño);
+		sl_panel.putConstraint(SpringLayout.WEST, textFieldCedulaDueño, 20, SpringLayout.EAST, labelCedulaDueño);
+		panel.add(textFieldCedulaDueño);
+		textFieldCedulaDueño.setColumns(32);
 		
 		
 		
-		JButton btnNewButton = new JButton("Ver mascotas");
-		sl_panel.putConstraint(SpringLayout.NORTH, btnNewButton, -7, SpringLayout.NORTH, labelCedulaDueño);
-		sl_panel.putConstraint(SpringLayout.EAST, textField, -20, SpringLayout.WEST, btnNewButton);
-		sl_panel.putConstraint(SpringLayout.EAST, btnNewButton, -20, SpringLayout.EAST, panel);
-		panel.add(btnNewButton);
-		tableMascotas.setEnabled(false);
 		
-		JScrollPane scrollPane = new JScrollPane(tableMascotas);
-		sl_panel.putConstraint(SpringLayout.NORTH, scrollPane, 23, SpringLayout.SOUTH, labelCedulaDueño);
-		sl_panel.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, panel);
-		panel.add(scrollPane);
+		
+		JButton btnVerMascotas = new JButton("Ver mascotas");
+		sl_panel.putConstraint(SpringLayout.NORTH, btnVerMascotas, -7, SpringLayout.NORTH, labelCedulaDueño);
+		sl_panel.putConstraint(SpringLayout.EAST, textFieldCedulaDueño, -20, SpringLayout.WEST, btnVerMascotas);
+		sl_panel.putConstraint(SpringLayout.EAST, btnVerMascotas, -20, SpringLayout.EAST, panel);
+		panel.add(btnVerMascotas);
+		
+		controlador = new ControladorVerMascotas();
+		
+		btnVerMascotas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String[] columnas = { "APODO", "RAZA", "CI DUEÑO" };
+				String strCedula = textFieldCedulaDueño.getText().trim();
+
+				// Verifica que la cedula no esté vacía
+				if (!strCedula.isEmpty()) {
+
+					// Verifica que la CI del dueño sea solo números
+					int cedula = -1;
+					try {
+						cedula = Integer.parseInt(strCedula);						
+					} catch (NumberFormatException e1){
+						JOptionPane.showMessageDialog(frame, "Formato inválido de cédula.", "", JOptionPane.ERROR_MESSAGE);
+					}
+
+					// CI válida
+					if (cedula != -1) {
+
+						// Crea la tabla con las mascotas del dueño
+						try {
+							data = controlador.listarMascotas(cedula);
+							
+							JTable tableMascotas = new JTable(data, columnas);
+							tableMascotas.setEnabled(false);
+
+							JScrollPane scrollPane = new JScrollPane(tableMascotas);
+							tableMascotas.getTableHeader().setReorderingAllowed(false);
+
+							sl_panel.putConstraint(SpringLayout.NORTH, scrollPane, 23, SpringLayout.SOUTH, labelCedulaDueño);
+							sl_panel.putConstraint(SpringLayout.WEST, scrollPane, 0, SpringLayout.WEST, panel);
+							sl_panel.putConstraint(SpringLayout.EAST, scrollPane, 0, SpringLayout.EAST, panel);
+							panel.add(scrollPane);
+
+							textFieldCedulaDueño.setText("");
+
+						} catch (SQLException | ExceptionsDueños | IOException e1) {
+							// Muestra el error
+							JOptionPane.showMessageDialog(frame, e1.getMessage());
+						}
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(frame, "Ingresa la CI del dueño.", "Campo obligatorio", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		
 		
 		
 		

@@ -4,16 +4,18 @@ package obligatorio.grafica.ventanas;
 import java.awt.EventQueue;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
+import java.io.IOException;
+import java.sql.SQLException;
+
 import obligatorio.grafica.controladores.ControladorVerDueños;
 
 public class VentanaVerDueños {
 
 	private JFrame frame;
-	private ControladorVerDueños controladorVentanaDueños;
-	
+	private Object[][] data;
 
 	/**
 	 * Launch the application.
@@ -35,7 +37,18 @@ public class VentanaVerDueños {
 	 * Create the application.
 	 */
 	public VentanaVerDueños() {
-		initialize();
+		
+		ControladorVerDueños controlador = new ControladorVerDueños();
+		// Intenta obtener los datos
+		// Si puede abre la ventana, si no muestra error
+		try {
+			data = controlador.listarDueños();
+			initialize();
+			
+		} catch (SQLException | IOException e) {
+			JOptionPane.showMessageDialog(frame, "No se pudo establecer la conexión.");
+		}
+		
 	}
 
 	/**
@@ -43,7 +56,7 @@ public class VentanaVerDueños {
 	 */
 	private void initialize() {
 		
-		controladorVentanaDueños = new ControladorVerDueños();
+		
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 218);
@@ -59,9 +72,6 @@ public class VentanaVerDueños {
 		
 		String[] columnas = { "CI", "NOMBRE", "APELLIDO" };
 		
-		// FIXME: Rodear con try catch
-		
-		Object[][] data = controladorVentanaDueños.listarDueños();
 		
 		JTable tableDueños = new JTable(data, columnas);
 		tableDueños.getTableHeader().setReorderingAllowed(false);
