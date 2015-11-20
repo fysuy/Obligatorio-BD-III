@@ -1,17 +1,21 @@
 package obligatorio.grafica.controladores;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
+import obligatorio.logica.Fachada;
 import obligatorio.logica.valueObjects.VODueño;
 
 public class ControladorVerDueños {
 
 	
-	public Object[][] listarDueños() {
+	public Object[][] listarDueños() throws SQLException, IOException {
 		
 		Object[][] data = null;
 		
-		VODueño[] dueños = {} ;
-		// VODueño[] dueños = {new VODueño(44478897, "Alex", "Kalayjian")} ;
-		// VODueño[] dueños = (VODueño[]) Fachada.getInstance().listarDueños().toArray();
+		
+//		VODueño[] dueños = {new VODueño(44478897, "Alex", "Kalayjian")} ;
+		VODueño[] dueños = (VODueño[]) Fachada.getInstance().listarDueños().toArray();
 		
 		if (dueños.length != 0) {
 			
@@ -25,9 +29,9 @@ public class ControladorVerDueños {
 		} else {
 			
 			data = new Object[1][3];
-			data [0][0] = "Vacio";
-			data [0][1] = "Vacio";
-			data [0][2] = "Vacio";
+			data [0][0] = "";
+			data [0][1] = "";
+			data [0][2] = "";
 		}
 		
 		return data;

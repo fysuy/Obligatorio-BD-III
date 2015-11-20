@@ -148,5 +148,4 @@ public class VentanaMenuPrincipal {
 	public void setVisible(boolean visible) {
 		frame.setVisible(visible);
 	}
-
 }

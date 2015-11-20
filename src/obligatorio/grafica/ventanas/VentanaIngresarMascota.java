@@ -3,10 +3,18 @@ package obligatorio.grafica.ventanas;
 import java.awt.EventQueue;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
 
+import obligatorio.grafica.controladores.ControladorIngresarDueño;
+import obligatorio.grafica.controladores.ControladorIngresarMascota;
+import obligatorio.logica.exceptions.ExceptionsDueños;
+
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class VentanaIngresarMascota {
 
@@ -56,10 +64,7 @@ public class VentanaIngresarMascota {
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
-		JButton btnIngresarMascota = new JButton("Ingresar Mascota");
-		sl_panel.putConstraint(SpringLayout.EAST, btnIngresarMascota, -20, SpringLayout.EAST, panel);
-		btnIngresarMascota.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(btnIngresarMascota);
+		
 		
 		// Cédula del dueño
 		JLabel labelCedulaDueño = new JLabel("Cédula del dueño");
@@ -67,7 +72,7 @@ public class VentanaIngresarMascota {
 		labelCedulaDueño.setHorizontalAlignment(SwingConstants.TRAILING);
 		panel.add(labelCedulaDueño);
 			
-		JTextField textFieldCedulaDueño = new JTextField();
+		final JTextField textFieldCedulaDueño = new JTextField();
 		sl_panel.putConstraint(SpringLayout.NORTH, textFieldCedulaDueño, 10, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, textFieldCedulaDueño, 20, SpringLayout.EAST, labelCedulaDueño);
 		sl_panel.putConstraint(SpringLayout.NORTH, labelCedulaDueño, 3, SpringLayout.NORTH, textFieldCedulaDueño);
@@ -82,7 +87,7 @@ public class VentanaIngresarMascota {
 		labelRaza.setHorizontalAlignment(SwingConstants.TRAILING);
 		panel.add(labelRaza);
 			
-		JTextField textFieldRaza = new JTextField();
+		final JTextField textFieldRaza = new JTextField();
 		sl_panel.putConstraint(SpringLayout.NORTH, textFieldRaza, 10, SpringLayout.SOUTH, textFieldCedulaDueño);
 		sl_panel.putConstraint(SpringLayout.WEST, textFieldRaza, 20, SpringLayout.EAST, labelRaza);
 		sl_panel.putConstraint(SpringLayout.NORTH, labelRaza, 3, SpringLayout.NORTH, textFieldRaza);
@@ -99,7 +104,55 @@ public class VentanaIngresarMascota {
 		
 		panel.add(labelApodo);
 			
-		JTextField textFieldApodo = new JTextField();
+		final JTextField textFieldApodo = new JTextField();
+		
+		JButton btnIngresarMascota = new JButton("Ingresar Mascota");
+		btnIngresarMascota.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ControladorIngresarMascota controlador = new ControladorIngresarMascota();
+				
+				// Obtiene los valores de los campos
+				String strCedula = textFieldCedulaDueño.getText().trim();
+				String raza = textFieldRaza.getText().trim();
+				String apodo = textFieldApodo.getText().trim();
+				
+				// Verifica que no falten campos
+				if (!strCedula.isEmpty() && !raza.isEmpty() && !apodo.isEmpty()) {
+					
+					// Verifica que la CI del dueño sea solo números
+					int cedula = -1;
+					try {
+						cedula = Integer.parseInt(strCedula);						
+					} catch (NumberFormatException e1){
+						JOptionPane.showMessageDialog(frame, "Formato inválido de cédula.", "", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					// CI válida
+					if (cedula != -1) {
+						
+						try {
+							controlador.ingresarMascota(cedula, apodo, raza);
+							JOptionPane.showMessageDialog(frame, "Mascota agregada.");
+							
+							textFieldCedulaDueño.setText("");
+							textFieldRaza.setText("");
+							textFieldApodo.setText("");
+							
+						} catch (SQLException | ExceptionsDueños | IOException e1) {
+							JOptionPane.showMessageDialog(frame, e1.getMessage());
+						}
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(frame, "Completa todos los campos.", "Campos obligatorios", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		sl_panel.putConstraint(SpringLayout.EAST, btnIngresarMascota, -20, SpringLayout.EAST, panel);
+		btnIngresarMascota.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(btnIngresarMascota);
+		
 		sl_panel.putConstraint(SpringLayout.WEST, textFieldApodo, 20, SpringLayout.EAST, labelApodo);
 		sl_panel.putConstraint(SpringLayout.NORTH, btnIngresarMascota, 10, SpringLayout.SOUTH, textFieldApodo);
 		sl_panel.putConstraint(SpringLayout.NORTH, textFieldApodo, 10, SpringLayout.SOUTH, textFieldRaza);

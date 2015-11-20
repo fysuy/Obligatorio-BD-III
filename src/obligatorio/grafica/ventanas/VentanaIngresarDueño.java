@@ -3,10 +3,17 @@ package obligatorio.grafica.ventanas;
 import java.awt.EventQueue;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
 
+import obligatorio.grafica.controladores.ControladorIngresarDueño;
+import obligatorio.logica.exceptions.ExceptionsDueños;
+
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class VentanaIngresarDueño {
 
@@ -56,57 +63,109 @@ public class VentanaIngresarDueño {
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
-		JButton btnIngresarMascota = new JButton("Ingresar Due\u00F1o");
-		sl_panel.putConstraint(SpringLayout.EAST, btnIngresarMascota, -20, SpringLayout.EAST, panel);
-		btnIngresarMascota.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(btnIngresarMascota);
 		
-		// Cédula del dueño
-		JLabel labelCedulaDueño = new JLabel("C\u00E9dula de identidad");
-		sl_panel.putConstraint(SpringLayout.WEST, labelCedulaDueño, 20, SpringLayout.WEST, panel);
-		labelCedulaDueño.setHorizontalAlignment(SwingConstants.TRAILING);
-		panel.add(labelCedulaDueño);
+		
+		// Cédula
+		JLabel labelCedula = new JLabel("C\u00E9dula de identidad");
+		sl_panel.putConstraint(SpringLayout.WEST, labelCedula, 20, SpringLayout.WEST, panel);
+		labelCedula.setHorizontalAlignment(SwingConstants.TRAILING);
+		panel.add(labelCedula);
 			
-		JTextField textFieldCedulaDueño = new JTextField();
-		sl_panel.putConstraint(SpringLayout.NORTH, textFieldCedulaDueño, 10, SpringLayout.NORTH, panel);
-		sl_panel.putConstraint(SpringLayout.WEST, textFieldCedulaDueño, 20, SpringLayout.EAST, labelCedulaDueño);
-		sl_panel.putConstraint(SpringLayout.NORTH, labelCedulaDueño, 3, SpringLayout.NORTH, textFieldCedulaDueño);
-		sl_panel.putConstraint(SpringLayout.EAST, textFieldCedulaDueño, -20, SpringLayout.EAST, panel);
-		panel.add(textFieldCedulaDueño);
-		textFieldCedulaDueño.setColumns(34);
+		final JTextField textFieldCedula = new JTextField();
+		sl_panel.putConstraint(SpringLayout.NORTH, textFieldCedula, 10, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, textFieldCedula, 20, SpringLayout.EAST, labelCedula);
+		sl_panel.putConstraint(SpringLayout.NORTH, labelCedula, 3, SpringLayout.NORTH, textFieldCedula);
+		sl_panel.putConstraint(SpringLayout.EAST, textFieldCedula, -20, SpringLayout.EAST, panel);
+		panel.add(textFieldCedula);
+		textFieldCedula.setColumns(34);
 		
-		// Raza
-		JLabel labelRaza = new JLabel("Nombre");
-		sl_panel.putConstraint(SpringLayout.WEST, labelRaza, 20, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.EAST, labelRaza, 0, SpringLayout.EAST, labelCedulaDueño);
-		labelRaza.setHorizontalAlignment(SwingConstants.TRAILING);
-		panel.add(labelRaza);
+		// Nombre
+		JLabel labelNombre = new JLabel("Nombre");
+		sl_panel.putConstraint(SpringLayout.WEST, labelNombre, 20, SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, labelNombre, 0, SpringLayout.EAST, labelCedula);
+		labelNombre.setHorizontalAlignment(SwingConstants.TRAILING);
+		panel.add(labelNombre);
 			
-		JTextField textFieldRaza = new JTextField();
-		sl_panel.putConstraint(SpringLayout.NORTH, textFieldRaza, 10, SpringLayout.SOUTH, textFieldCedulaDueño);
-		sl_panel.putConstraint(SpringLayout.WEST, textFieldRaza, 20, SpringLayout.EAST, labelRaza);
-		sl_panel.putConstraint(SpringLayout.NORTH, labelRaza, 3, SpringLayout.NORTH, textFieldRaza);
-		sl_panel.putConstraint(SpringLayout.EAST, textFieldRaza, -20, SpringLayout.EAST, panel);
-		panel.add(textFieldRaza);
-		textFieldRaza.setColumns(34);
+		final JTextField textFieldNombre = new JTextField();
+		sl_panel.putConstraint(SpringLayout.NORTH, textFieldNombre, 10, SpringLayout.SOUTH, textFieldCedula);
+		sl_panel.putConstraint(SpringLayout.WEST, textFieldNombre, 20, SpringLayout.EAST, labelNombre);
+		sl_panel.putConstraint(SpringLayout.NORTH, labelNombre, 3, SpringLayout.NORTH, textFieldNombre);
+		sl_panel.putConstraint(SpringLayout.EAST, textFieldNombre, -20, SpringLayout.EAST, panel);
+		panel.add(textFieldNombre);
+		textFieldNombre.setColumns(34);
 		
 		
-		// Apodo
-		JLabel labelApodo = new JLabel("Apellido");
-		labelApodo.setHorizontalAlignment(SwingConstants.TRAILING);
-		sl_panel.putConstraint(SpringLayout.EAST, labelApodo, 0, SpringLayout.EAST, labelCedulaDueño);
-		sl_panel.putConstraint(SpringLayout.WEST, labelApodo, 20, SpringLayout.WEST, panel);
+		// Apellido
+		JLabel labelApellido = new JLabel("Apellido");
+		labelApellido.setHorizontalAlignment(SwingConstants.TRAILING);
+		sl_panel.putConstraint(SpringLayout.EAST, labelApellido, 0, SpringLayout.EAST, labelCedula);
+		sl_panel.putConstraint(SpringLayout.WEST, labelApellido, 20, SpringLayout.WEST, panel);
 		
-		panel.add(labelApodo);
+		panel.add(labelApellido);
+		
+		final JTextField textFieldApellido = new JTextField();
+		
+		// Ingresar dueño
+		JButton btnIngresarDueño = new JButton("Ingresar Due\u00F1o");
+		
+		btnIngresarDueño.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ControladorIngresarDueño controlador = new ControladorIngresarDueño();
+				
+				// Obtiene los valores de los campos
+				String strCedula = textFieldCedula.getText().trim();
+				String nombre = textFieldNombre.getText().trim();
+				String apellido = textFieldApellido.getText().trim();
+				
+				// Verifica que no falten campos
+				if (!strCedula.isEmpty() && !nombre.isEmpty() && !apellido.isEmpty()) {
+					
+					// Verifica que la CI sea solo números
+					int cedula = -1;
+					try {
+						cedula = Integer.parseInt(strCedula);						
+					} catch (NumberFormatException e1){
+						JOptionPane.showMessageDialog(frame, "Formato de cédula inválido.", "", JOptionPane.ERROR_MESSAGE);
+					}
+					
+					// CI válida
+					if (cedula != -1) {
+						
+						try {
+							controlador.ingresarDueño(cedula, nombre, apellido);
+							JOptionPane.showMessageDialog(frame, "Dueño creado.");
+							
+							textFieldCedula.setText("");
+							textFieldNombre.setText("");
+							textFieldApellido.setText("");
+							
+						} catch (SQLException | ExceptionsDueños | IOException e1) {
+							JOptionPane.showMessageDialog(frame, e1.getMessage());
+						}
+					}
+
+				} else {
+					JOptionPane.showMessageDialog(frame, "Completa todos los campos.", "Campos obligatorios", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+		sl_panel.putConstraint(SpringLayout.EAST, btnIngresarDueño, -20, SpringLayout.EAST, panel);
+		btnIngresarDueño.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(btnIngresarDueño);
+		
 			
-		JTextField textFieldApodo = new JTextField();
-		sl_panel.putConstraint(SpringLayout.WEST, textFieldApodo, 20, SpringLayout.EAST, labelApodo);
-		sl_panel.putConstraint(SpringLayout.NORTH, btnIngresarMascota, 10, SpringLayout.SOUTH, textFieldApodo);
-		sl_panel.putConstraint(SpringLayout.NORTH, textFieldApodo, 10, SpringLayout.SOUTH, textFieldRaza);
-		sl_panel.putConstraint(SpringLayout.NORTH, labelApodo, 3, SpringLayout.NORTH, textFieldApodo);
-		sl_panel.putConstraint(SpringLayout.EAST, textFieldApodo, -20, SpringLayout.EAST, panel);
-		panel.add(textFieldApodo);
-		textFieldApodo.setColumns(34);
+		
+		sl_panel.putConstraint(SpringLayout.WEST, textFieldApellido, 20, SpringLayout.EAST, labelApellido);
+		sl_panel.putConstraint(SpringLayout.NORTH, btnIngresarDueño, 10, SpringLayout.SOUTH, textFieldApellido);
+		sl_panel.putConstraint(SpringLayout.NORTH, textFieldApellido, 10, SpringLayout.SOUTH, textFieldNombre);
+		sl_panel.putConstraint(SpringLayout.NORTH, labelApellido, 3, SpringLayout.NORTH, textFieldApellido);
+		sl_panel.putConstraint(SpringLayout.EAST, textFieldApellido, -20, SpringLayout.EAST, panel);
+		panel.add(textFieldApellido);
+		textFieldApellido.setColumns(34);
+		
+		
 		
 		
 	}

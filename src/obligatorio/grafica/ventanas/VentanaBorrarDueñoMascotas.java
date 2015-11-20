@@ -3,16 +3,24 @@ package obligatorio.grafica.ventanas;
 import java.awt.EventQueue;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
 
+import obligatorio.grafica.controladores.ControladorBorrarDueñoMascota;
+import obligatorio.logica.exceptions.ExceptionsDueños;
+
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class VentanaBorrarDueñoMascotas {
 
 	private JFrame frame;
-	
+	private ControladorBorrarDueñoMascota controlador;
+	private JTextField textFieldCedulaDueño;
 
 	/**
 	 * Launch the application.
@@ -57,24 +65,66 @@ public class VentanaBorrarDueñoMascotas {
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
-		JButton btnBorrarDueño = new JButton("Borrar due\u00F1o");
-		sl_panel.putConstraint(SpringLayout.EAST, btnBorrarDueño, -20, SpringLayout.EAST, panel);
-		btnBorrarDueño.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(btnBorrarDueño);
 		
 		// Cédula del dueño
 		JLabel labelCedula = new JLabel("CI del due\u00F1o");
 		sl_panel.putConstraint(SpringLayout.WEST, labelCedula, 20, SpringLayout.WEST, panel);
 		panel.add(labelCedula);
 			
-		JTextField textFieldCedulaDueño = new JTextField();
+		textFieldCedulaDueño = new JTextField();
+		textFieldCedulaDueño.setColumns(30);
+		panel.add(textFieldCedulaDueño);
+		
+		// Boton borrar dueño
+		controlador = new ControladorBorrarDueñoMascota();
+		JButton btnBorrarDueño = new JButton("Borrar due\u00F1o");
+		sl_panel.putConstraint(SpringLayout.EAST, btnBorrarDueño, -20, SpringLayout.EAST, panel);
+		btnBorrarDueño.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(btnBorrarDueño);
+		
+		btnBorrarDueño.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String strCedula = textFieldCedulaDueño.getText().trim();
+				
+				// Verifica que la cedula no esté vacía
+				if (!strCedula.isEmpty()) {
+
+					// Verifica que la CI del dueño sea solo números
+					int cedula = -1;
+					try {
+						cedula = Integer.parseInt(strCedula);						
+					} catch (NumberFormatException e1){
+						JOptionPane.showMessageDialog(frame, "Formato inválido de cédula.", "", JOptionPane.ERROR_MESSAGE);
+					}
+
+					// CI válida
+					if (cedula != -1) {
+
+						try {
+							controlador.borrarDueñoMascota(cedula);
+						} catch (SQLException | ExceptionsDueños | IOException e1) {
+							// Muestra el error
+							JOptionPane.showMessageDialog(frame, e1.getMessage());
+						}
+					} 
+					
+				} else {
+					JOptionPane.showMessageDialog(frame, "Ingresa la CI del dueño.", "Campo obligatorio", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		
+		
+		
+		// Alineación textfield
 		sl_panel.putConstraint(SpringLayout.NORTH, textFieldCedulaDueño, 30, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, textFieldCedulaDueño, 20, SpringLayout.EAST, labelCedula);
 		sl_panel.putConstraint(SpringLayout.NORTH, btnBorrarDueño, -2, SpringLayout.NORTH, textFieldCedulaDueño);
 		sl_panel.putConstraint(SpringLayout.EAST, textFieldCedulaDueño, -20, SpringLayout.WEST, btnBorrarDueño);
 		sl_panel.putConstraint(SpringLayout.NORTH, labelCedula, 3, SpringLayout.NORTH, textFieldCedulaDueño);
-		panel.add(textFieldCedulaDueño);
-		textFieldCedulaDueño.setColumns(30);
+		
 		
 		JLabel lblInfo = new JLabel("Al borrar a un due\u00F1o tambi\u00E9n se eliminar\u00E1n sus mascotas.");
 		sl_panel.putConstraint(SpringLayout.NORTH, lblInfo, 10, SpringLayout.SOUTH, textFieldCedulaDueño);
