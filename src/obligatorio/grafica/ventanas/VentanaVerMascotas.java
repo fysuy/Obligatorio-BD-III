@@ -17,7 +17,9 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.grafica.controladores.ControladorVerMascotas;
 
 public class VentanaVerMascotas {
@@ -151,10 +153,9 @@ public class VentanaVerMascotas {
 
 							textFieldCedulaDueño.setText("");
 
-						} catch (LogicaException e) {
+						} catch (LogicaException | PersistenciaException | DueñoException e) {
 							// Muestra el error
-							JOptionPane.showMessageDialog(frame,
-									e.getMessage());
+							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
 					}
 

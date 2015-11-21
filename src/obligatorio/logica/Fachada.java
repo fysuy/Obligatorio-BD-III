@@ -93,15 +93,15 @@ public class Fachada {
 		return dueños.listarDueños(icon);
 	}
 
-	public List<VOMascota> listarMascotas(int cedulaDueño) {
-		throw new NotImplementedException();
-		// IConexion icon = pool.obtenerConexion(true);
-		//
-		// if (dueños.member(icon, cedulaDueño)) {
-		// return dueños.find(icon, cedulaDueño).listarMascotas(icon);
-		// } else {
-		// throw new DueñoException("Error: no existe dueño");
-		// }
+	public List<VOMascota> listarMascotas(int cedulaDueño)
+			throws PersistenciaException, DueñoException {
+		IConexion icon = ipool.obtenerConexion(true);
+
+		if (dueños.member(icon, cedulaDueño)) {
+			return dueños.find(icon, cedulaDueño).listarMascotas(icon);
+		} else {
+			throw new DueñoException("Error: no existe dueño");
+		}
 	}
 
 	public void borrarDueñoMascotas(int cedulaDueño) {

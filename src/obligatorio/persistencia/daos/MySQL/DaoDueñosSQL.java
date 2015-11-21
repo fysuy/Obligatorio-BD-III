@@ -60,8 +60,6 @@ public class DaoDueñosSQL implements IDaoDueños {
 		} catch (SQLException e) {
 			throw new PersistenciaException(e.getMessage());
 		}
-
-	
 	}
 
 	public Dueño find(IConexion ic, int cedula) throws PersistenciaException {
