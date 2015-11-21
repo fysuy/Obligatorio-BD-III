@@ -30,8 +30,8 @@ public class Fachada {
 			String pool = p.getProperty("logica.pool");
 			String daoDueño = p.getProperty("logica.daoDueno");
 			this.ipool = (IPoolConexiones) (Class.forName(pool).newInstance());
-			
-			//TODO: cambiarlo por la factory!
+
+			// TODO: cambiarlo por la factory!
 			this.dueños = (IDaoDueños) (Class.forName(daoDueño).newInstance());
 		} catch (InstantiationException | IllegalAccessException
 				| ClassNotFoundException | IOException e) {
@@ -88,10 +88,9 @@ public class Fachada {
 		ipool.liberarConexion(icon, true);
 	}
 
-	public List<VODueño> listarDueños() {
-		throw new NotImplementedException();
-		// IConexion icon = pool.obtenerConexion(true);
-		// return dueños.listarDueños(icon);
+	public List<VODueño> listarDueños() throws PersistenciaException {
+		IConexion icon = ipool.obtenerConexion(true);
+		return dueños.listarDueños(icon);
 	}
 
 	public List<VOMascota> listarMascotas(int cedulaDueño) {

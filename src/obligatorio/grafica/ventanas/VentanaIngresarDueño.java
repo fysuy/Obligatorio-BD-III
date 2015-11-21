@@ -159,7 +159,8 @@ public class VentanaIngresarDueño {
 							textFieldNombre.setText("");
 							textFieldApellido.setText("");
 
-						} catch (LogicaException | DueñoException | PersistenciaException e) {
+						} catch (LogicaException | DueñoException
+								| PersistenciaException e) {
 							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
 					}

@@ -1,12 +1,14 @@
 package obligatorio.grafica.controladores;
 
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.Fachada;
 import obligatorio.logica.valueObjects.VODueño;
 
 public class ControladorVerDueños {
 
-	public Object[][] listarDueños() throws LogicaException {
+	public Object[][] listarDueños() throws LogicaException,
+			PersistenciaException {
 
 		Object[][] data = null;
 

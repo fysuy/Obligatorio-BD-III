@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.grafica.controladores.ControladorVerDueños;
 
 public class VentanaVerDueños {
@@ -47,11 +48,10 @@ public class VentanaVerDueños {
 			data = controlador.listarDueños();
 			initialize();
 
-		} catch (LogicaException e) {
+		} catch (LogicaException | PersistenciaException e) {
 			JOptionPane.showMessageDialog(frame,
 					"No se pudo establecer la conexión.");
 		}
-
 	}
 
 	/**
