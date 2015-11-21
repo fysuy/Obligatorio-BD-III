@@ -30,6 +30,8 @@ public class Fachada {
 			String pool = p.getProperty("logica.pool");
 			String daoDueño = p.getProperty("logica.daoDueno");
 			this.ipool = (IPoolConexiones) (Class.forName(pool).newInstance());
+			
+			//TODO: cambiarlo por la factory!
 			this.dueños = (IDaoDueños) (Class.forName(daoDueño).newInstance());
 		} catch (InstantiationException | IllegalAccessException
 				| ClassNotFoundException | IOException e) {

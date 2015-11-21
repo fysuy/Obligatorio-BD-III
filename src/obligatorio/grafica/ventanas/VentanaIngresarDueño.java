@@ -16,7 +16,9 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.grafica.controladores.ControladorIngresarDueño;
 
 public class VentanaIngresarDueño {
@@ -157,7 +159,7 @@ public class VentanaIngresarDueño {
 							textFieldNombre.setText("");
 							textFieldApellido.setText("");
 
-						} catch (LogicaException e) {
+						} catch (LogicaException | DueñoException | PersistenciaException e) {
 							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
 					}
