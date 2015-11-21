@@ -36,14 +36,16 @@ public class PoolConexionesMySQL implements IPoolConexiones {
 		this.url = p.getProperty("persistencia.url");
 		this.user = p.getProperty("persistencia.user");
 		this.password = p.getProperty("persistencia.password");
+		this.driver = p.getProperty("persistencia.driver");
 		this.tamanio = Integer.parseInt(p.getProperty("persistencia.tamanio"));
 		this.tope = 0;
 		this.creadas = 0;
+		this.conexiones = new IConexion[this.tamanio];
 
 		Class.forName(driver);
 	}
 
-	public IConexion obtenerConexion(boolean modifica)
+	public synchronized IConexion obtenerConexion(boolean modifica)
 			throws InterruptedException, SQLException {
 		while (this.creadas == this.tamanio && this.tope == 0) {
 			wait();
@@ -68,7 +70,7 @@ public class PoolConexionesMySQL implements IPoolConexiones {
 		return con;
 	}
 
-	public void liberarConexion(IConexion ic, boolean ok) {
+	public synchronized void liberarConexion(IConexion ic, boolean ok) {
 		try {
 			if (ok) {
 				((ConexionMySQL) ic).getCon().commit();

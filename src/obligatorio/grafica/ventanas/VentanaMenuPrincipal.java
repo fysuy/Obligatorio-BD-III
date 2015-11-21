@@ -56,7 +56,6 @@ public class VentanaMenuPrincipal {
 		SpringLayout sl_panel = new SpringLayout();
 		panel.setLayout(sl_panel);
 		
-		
 		// INGRESAR DUEÑO
 		JButton btnIngresarDueño = new JButton("Ingresar Due\u00F1o");
 		sl_panel.putConstraint(SpringLayout.WEST, btnIngresarDueño, 140, SpringLayout.WEST, panel);
@@ -66,14 +65,12 @@ public class VentanaMenuPrincipal {
 			public void actionPerformed(ActionEvent e) {
 				VentanaIngresarDueño ventanaIngresarDueño = new VentanaIngresarDueño();
 				ventanaIngresarDueño.setVisible(true);
-				
 			}
 		});
 		
 		sl_panel.putConstraint(SpringLayout.NORTH, btnIngresarDueño, 30, SpringLayout.NORTH, panel);
 		btnIngresarDueño.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(btnIngresarDueño);
-		
 		
 		// INGRESAR MASCOTA
 		JButton btnIngresarMascota = new JButton("Ingresar Mascota");
