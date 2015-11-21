@@ -11,7 +11,7 @@ import obligatorio.util.*;
 
 public class Fachada {
    private static Fachada instance = null;
-   private DaoDueños dueños;
+   private IDaoDueños dueños;
    private IPoolConexiones pool;
    
    protected Fachada() throws IOException {
