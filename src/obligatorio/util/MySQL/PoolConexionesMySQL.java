@@ -1,4 +1,4 @@
-package obligatorio.util;
+package obligatorio.util.MySQL;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.DriverManager;
@@ -7,7 +7,10 @@ import java.util.Properties;
 
 import com.mysql.jdbc.Connection;
 
-public class PoolConexiones implements IPoolConexiones {
+import obligatorio.util.IConexion;
+import obligatorio.util.IPoolConexiones;
+
+public class PoolConexionesMySQL implements IPoolConexiones {
 	
 	private String driver;
 	private String url;
@@ -21,7 +24,7 @@ public class PoolConexiones implements IPoolConexiones {
 	private int creadas;
 	private IConexion [] conexiones;
 
-	public PoolConexiones() throws IOException, ClassNotFoundException {
+	public PoolConexionesMySQL() throws IOException, ClassNotFoundException {
 		super();
 		
 		Properties p = new Properties();
@@ -51,7 +54,7 @@ public class PoolConexiones implements IPoolConexiones {
 			aux.setTransactionIsolation(nivelTransaccionalidad);
 			aux.setAutoCommit(false);
 			
-			con = new Conexion(aux);
+			con = new ConexionMySQL(aux);
 			this.creadas++;
 		} else {
 			con = this.conexiones[this.tope-1];
@@ -65,9 +68,9 @@ public class PoolConexiones implements IPoolConexiones {
 	public void liberarConexion(IConexion ic, boolean ok) {		
 		try {
 			if(ok) {
-				((Conexion)ic).getCon().commit();
+				((ConexionMySQL)ic).getCon().commit();
 			} else {
-				((Conexion)ic).getCon().rollback();
+				((ConexionMySQL)ic).getCon().rollback();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

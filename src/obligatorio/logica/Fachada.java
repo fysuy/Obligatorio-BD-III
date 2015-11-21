@@ -8,15 +8,16 @@ import obligatorio.logica.exceptions.ExceptionsDueños;
 import obligatorio.logica.valueObjects.*;
 import obligatorio.persistencia.daos.*;
 import obligatorio.util.*;
+import obligatorio.util.MySQL.PoolConexionesMySQL;
 
 public class Fachada {
    private static Fachada instance = null;
-   private DaoDueños dueños;
+   private IDaoDueños dueños;
    private IPoolConexiones pool;
    
    protected Fachada() throws IOException {
       dueños = null;
-      pool = new PoolConexiones();
+      pool = new PoolConexionesMySQL();
    }
    
    public static Fachada getInstance() throws IOException {

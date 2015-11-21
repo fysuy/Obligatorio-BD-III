@@ -1,7 +1,9 @@
-package obligatorio.util;
+package obligatorio.util.MySQL;
 import com.mysql.jdbc.Connection;
 
-public class Conexion implements IConexion {
+import obligatorio.util.IConexion;
+
+public class ConexionMySQL implements IConexion {
 	private Connection con;
 	
 	public Connection getCon() {
@@ -12,7 +14,7 @@ public class Conexion implements IConexion {
 		this.con = con;
 	}
 	
-	public Conexion(Connection con) {
+	public ConexionMySQL(Connection con) {
 		super();
 		this.con = con;
 	}
