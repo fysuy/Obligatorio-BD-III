@@ -1,56 +1,56 @@
 package obligatorio.persistencia.consultas;
 
 public class Consultas {
-	
+
 	/* CONSULTAS DUEÑOS */
-	 
-	public String listarDueños(){
+
+	public String listarDueños() {
 		String query = "SELECT * FROM Dueños";
 		return query;
 	}
-	
+
 	public String existeDueño() {
 		String query = "SELECT d.cedula FROM Dueños d WHERE d.cedula = (?)";
 		return query;
 	}
-	
+
 	public String obtenerDueño() {
 		String query = "SELECT * FROM Dueños d WHERE d.cedula = (?)";
 		return query;
 	}
-	
+
 	public String insertarDueño() {
-		String insert = "INSERT INTO Dueños (cedula, nombre, apellido)" +
-						"VALUES (?, ?, ?)";
+		String insert = "INSERT INTO Dueños (cedula, nombre, apellido)"
+				+ "VALUES (?, ?, ?)";
 		return insert;
 	}
-	
+
 	public String borrarDueñoMascotas() {
-		String delete = "DELETE FROM Mascotas m WHERE m.cedulaDueño = (?)" +
-						"DELETE FROM Dueños d WHERE d.cedula = (?)";
+		String delete = "DELETE FROM Mascotas m WHERE m.cedulaDueño = (?)"
+				+ "DELETE FROM Dueños d WHERE d.cedula = (?)";
 		return delete;
 	}
-	
+
 	/* CONSULTAS MASCOTAS */
-	
-	public String listarMascotas(){
+
+	public String listarMascotas() {
 		String query = "SELECT * FROM Mascotas where cedulaDueño = (?)";
 		return query;
 	}
-	
+
 	public String existeMascota() {
-		String query = "SELECT m.apodo FROM Mascotas m WHERE m.apodo = (?)";
+		String query = "SELECT m.apodo FROM Mascotas m WHERE m.apodo = (?) and m.cedulaDueño = (?)";
 		return query;
 	}
-	
+
 	public String insertarMascota() {
-		String insert = "INSERT INTO Mascotas (apodo, raza, cedulaDueño)" +
-						"VALUES (?, ?, ?)";
+		String insert = "INSERT INTO Mascotas (apodo, raza, cedulaDueño)"
+				+ "VALUES (?, ?, ?)";
 		return insert;
 	}
-	
-	public String booMascotas(){
-		String delete = "Delete from Mascotas ";
+
+	public String borrarMascotas() {
+		String delete = "Delete from Mascotas where cedulaDueño = (?)";
 		return delete;
 	}
 }

@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.*;
 
 import obligatorio.grafica.controladores.ControladorIngresarMascota;
-import obligatorio.logica.exceptions.ExceptionsDueños;
+import obligatorio.logica.exceptions.DueñoException;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -138,7 +138,7 @@ public class VentanaIngresarMascota {
 							textFieldRaza.setText("");
 							textFieldApodo.setText("");
 							
-						} catch (SQLException | ExceptionsDueños | IOException e1) {
+						} catch (SQLException | DueñoException | IOException e1) {
 							JOptionPane.showMessageDialog(frame, e1.getMessage());
 						}
 					}

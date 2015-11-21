@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 import obligatorio.logica.Mascota;
-import obligatorio.logica.exceptions.ExceptionsMascotas;
+import obligatorio.logica.exceptions.MascotaException;
 import obligatorio.logica.valueObjects.VOMascota;
 import obligatorio.persistencia.daos.IDaoMascotas;
 import obligatorio.util.IConexion;
@@ -54,7 +54,7 @@ private int cedula;
 	}
 
 	@Override
-	public int insert (IConexion ic, Mascota mascota) throws ExceptionsMascotas {
+	public int insert (IConexion ic, Mascota mascota) throws MascotaException {
 		File fichero=new File(ruta+mascota.getApodo()+"-"+cedula+extension);
 		if(!fichero.exists()){
 			PrintWriter pw = null;
@@ -76,7 +76,7 @@ private int cedula;
 		
 
 	@Override
-	public LinkedList <VOMascota> listarMascotas(IConexion con) throws ExceptionsMascotas
+	public LinkedList <VOMascota> listarMascotas(IConexion con) throws MascotaException
 	{
 		LinkedList<VOMascota> list=new LinkedList<VOMascota>();
 		try {
@@ -104,16 +104,16 @@ private int cedula;
 			}
 			//TODO - Anlizar caso
 		} catch (FileNotFoundException e) {
-			throw new ExceptionsMascotas("Se produjo un error: no se encontro archivo.");
+			throw new MascotaException("Se produjo un error: no se encontro archivo.");
 		} catch (IOException e) {
-			throw new ExceptionsMascotas("Se produjo un error en IO");
+			throw new MascotaException("Se produjo un error en IO");
 		}
 		return list;
 	}
 		
 
 	@Override
-	public void borrarMascotas(IConexion con) throws ExceptionsMascotas {
+	public void borrarMascotas(IConexion con) throws MascotaException {
 		File dir=new File(ruta);
 		File[] listaDeArchivos=dir.listFiles();
 		int cantFiles=listaDeArchivos.length;
@@ -128,7 +128,7 @@ private int cedula;
 	}
 
 	@Override
-	public boolean member(IConexion ic, String apodo) throws ExceptionsMascotas {
+	public boolean member(IConexion ic, String apodo) throws MascotaException {
 		// TODO Auto-generated method stub
 		return false;
 	}

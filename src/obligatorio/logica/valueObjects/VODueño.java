@@ -3,18 +3,18 @@ package obligatorio.logica.valueObjects;
 import java.io.Serializable;
 
 public class VODueño implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private int cedula;
 	private String nombre;
 	private String apellido;
-	
-	public VODueño(int ced,String nom,String ape){
+
+	public VODueño(int ced, String nom, String ape) {
 		super();
-		this.cedula=ced;
-		this.nombre=nom;
-		this.apellido=ape;
+		this.cedula = ced;
+		this.nombre = nom;
+		this.apellido = ape;
 	}
 
 	public int getCedula() {
@@ -41,4 +41,3 @@ public class VODueño implements Serializable {
 		this.apellido = apellido;
 	}
 }
-

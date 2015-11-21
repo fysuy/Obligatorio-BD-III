@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import obligatorio.logica.Fachada;
-import obligatorio.logica.exceptions.ExceptionsDueños;
+import obligatorio.logica.exceptions.DueñoException;
 import obligatorio.logica.valueObjects.VOMascota;
 
 public class ControladorVerMascotas {
 
 	
-	public Object[][] listarMascotas(int cedula) throws SQLException, ExceptionsDueños, IOException {
+	public Object[][] listarMascotas(int cedula) throws SQLException, DueñoException, IOException {
 		
 		Object[][] data = null;
 		

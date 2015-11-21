@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import obligatorio.grafica.controladores.ControladorVerMascotas;
-import obligatorio.logica.exceptions.ExceptionsDueños;
+import obligatorio.logica.exceptions.DueñoException;
 
 public class VentanaVerMascotas {
 
@@ -137,7 +137,7 @@ public class VentanaVerMascotas {
 
 							textFieldCedulaDueño.setText("");
 
-						} catch (SQLException | ExceptionsDueños | IOException e1) {
+						} catch (SQLException | DueñoException | IOException e1) {
 							// Muestra el error
 							JOptionPane.showMessageDialog(frame, e1.getMessage());
 						}

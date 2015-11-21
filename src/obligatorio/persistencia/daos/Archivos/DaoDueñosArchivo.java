@@ -15,8 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import obligatorio.logica.Dueño;
-import obligatorio.logica.exceptions.ExceptionsDueños;
-import obligatorio.logica.exceptions.ExceptionsMascotas;
+import obligatorio.logica.exceptions.DueñoException;
+import obligatorio.logica.exceptions.MascotaException;
 import obligatorio.logica.valueObjects.VODueño;
 import obligatorio.persistencia.daos.IDaoDueños;
 import obligatorio.util.IConexion;
@@ -35,7 +35,7 @@ public class DaoDueñosArchivo implements IDaoDueños{
 		return (fichero.exists());
 	}
 
-	public void insert(Dueño due, IConexion ic) throws 	ExceptionsDueños {
+	public void insert(Dueño due, IConexion ic) throws 	DueñoException {
 		
 		try {
 			daoM.setCedulaDuenio(due.getCedula());
@@ -54,13 +54,13 @@ public class DaoDueñosArchivo implements IDaoDueños{
 				pw.close();
 			}
 		}catch (IOException e){
-			throw new ExceptionsDueños("Se produjo un error:" + e.getMessage());
+			throw new DueñoException("Se produjo un error:" + e.getMessage());
 		}
 		
 		
 	}
 
-	public Dueño find(int ced, IConexion con) throws ExceptionsDueños {
+	public Dueño find(int ced, IConexion con) throws DueñoException {
 		Dueño due = null;
 		try{
             // Abrimos el archivo
@@ -81,9 +81,9 @@ public class DaoDueñosArchivo implements IDaoDueños{
             
             due = new Dueño(ced,nom,ape);
 		}catch (FileNotFoundException e){
-			throw new ExceptionsDueños("No existe archivo");
+			throw new DueñoException("No existe archivo");
 		}catch (IOException e){
-			throw new ExceptionsDueños("Se produjo un error:" +e.getMessage());
+			throw new DueñoException("Se produjo un error:" +e.getMessage());
 		}
 		return due;
 	}
@@ -98,7 +98,7 @@ public class DaoDueñosArchivo implements IDaoDueños{
 			// BORRAR LAS MASCOTAS
 			try {
 				daoM.borrarMascotas(con);
-			} catch (ExceptionsMascotas e) {
+			} catch (MascotaException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -108,7 +108,7 @@ public class DaoDueñosArchivo implements IDaoDueños{
 	}
 
 
-	public LinkedList<VODueño> listarDuenios(IConexion con) throws ExceptionsDueños {
+	public LinkedList<VODueño> listarDuenios(IConexion con) throws DueñoException {
 		LinkedList<VODueño> list=new LinkedList<VODueño>();
 		try {
 			File dir=new File(ruta);
@@ -133,9 +133,9 @@ public class DaoDueñosArchivo implements IDaoDueños{
 				list.add(vod);
 			}
 		} catch (FileNotFoundException e) {
-			throw new ExceptionsDueños("No existe archivo");
+			throw new DueñoException("No existe archivo");
 		} catch (IOException e) {
-			throw new ExceptionsDueños("Se produjo un error:" +e.getMessage());
+			throw new DueñoException("Se produjo un error:" +e.getMessage());
 		}
 		return list;
 	}

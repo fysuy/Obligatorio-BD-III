@@ -14,9 +14,8 @@ public class main {
 
 	public static void main(String[] args) {
 		Connection con = null;
-		try
-		{
-			Properties p = new Properties(); 
+		try {
+			Properties p = new Properties();
 			String nomArch = "config/config.properties";
 			p.load(new FileInputStream(nomArch));
 			String driver = p.getProperty("driver");
@@ -27,66 +26,54 @@ public class main {
 			/* cargo el driver */
 			Class.forName(driver);
 			con = (Connection) DriverManager.getConnection(url, user, password);
-					 
+
 			/* creo la base de datos */
 			String database = "CREATE DATABASE dym";
-			PreparedStatement pstmt = (PreparedStatement) con.prepareStatement(database);
+			PreparedStatement pstmt = (PreparedStatement) con
+					.prepareStatement(database);
 			pstmt.executeUpdate();
 			pstmt.close();
-			
-			/*creo la tabla Dueños */
-			String dueños = "CREATE TABLE Dym.Dueños " +
-			"(cedula INT NOT NULL PRIMARY KEY, " +
-			" nombre VARCHAR(45) NOT NULL, " +
-			" apellido VARCHAR(45) NOT NULL)";
+
+			/* creo la tabla Dueños */
+			String dueños = "CREATE TABLE Dym.Dueños "
+					+ "(cedula INT NOT NULL PRIMARY KEY, "
+					+ " nombre VARCHAR(45) NOT NULL, "
+					+ " apellido VARCHAR(45) NOT NULL)";
 			pstmt = (PreparedStatement) con.prepareStatement(dueños);
 			pstmt.executeUpdate();
 			pstmt.close();
-			
+
 			/* creo la tabla Mascotas */
-			String mascotas = "CREATE TABLE Dym.Mascotas " +
-			"(apodo varchar (45) NOT NULL PRIMARY KEY, " +
-			" cedulaDueño INT NOT NULL," +
-			" raza varchar (45) NOT NULL,"+
-			" FOREIGN KEY (cedulaDueño) REFERENCES" +
-			" Dym.Dueños(cedula))";
-			 
+			String mascotas = "CREATE TABLE Dym.Mascotas "
+					+ "(apodo varchar (45) NOT NULL PRIMARY KEY, "
+					+ " cedulaDueño INT NOT NULL,"
+					+ " raza varchar (45) NOT NULL,"
+					+ " FOREIGN KEY (cedulaDueño) REFERENCES"
+					+ " Dym.Dueños(cedula))";
+
 			pstmt = (PreparedStatement) con.prepareStatement(mascotas);
 			pstmt.executeUpdate();
 			pstmt.close();
-		} 
-		catch (FileNotFoundException e)
-		{
+		} catch (FileNotFoundException e) {
 			/* si no encuentra el archivo de configuracion */
 			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			/* si hay problema al leer el archivo de configuracion */
 			e.printStackTrace();
-		}
-		catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			/* si hay algun problema vinculado al DBMS o la BD */
 			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e)
-		{
+		} catch (ClassNotFoundException e) {
 			/* si no se puede hallar la clase correspondiente al driver */
 			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
+		} finally {
+			try {
 				/* en cualquier caso, cierro la conexion */
 				if (con != null)
 					con.close();
-			}
-			catch (SQLException e)
-			{
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-	} 
+	}
 }

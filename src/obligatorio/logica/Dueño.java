@@ -1,8 +1,8 @@
 package obligatorio.logica;
 
-import java.sql.SQLException;
 import java.util.List;
 
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.valueObjects.VOMascota;
 import obligatorio.persistencia.daos.IDaoMascotas;
 import obligatorio.util.IConexion;
@@ -13,14 +13,15 @@ public class Dueño {
 	private String apellido;
 	private IDaoMascotas mascotas;
 
-	public Dueño(int cedula, String nombre, String apellido){
+	public Dueño(int cedula, String nombre, String apellido) {
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
 	}
 
-	public Dueño(int cedula, String nombre, String apellido, IDaoMascotas mascotas) {
+	public Dueño(int cedula, String nombre, String apellido,
+			IDaoMascotas mascotas) {
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
@@ -52,19 +53,22 @@ public class Dueño {
 		this.apellido = apellido;
 	}
 
-	public boolean tieneMascota(IConexion icon, String apodo) throws SQLException {
+	public boolean tieneMascota(IConexion icon, String apodo)
+			throws PersistenciaException {
 		return mascotas.member(icon, apodo);
 	}
 
-	public void addMascota(IConexion icon, Mascota mascota) throws SQLException {
+	public void addMascota(IConexion icon, Mascota mascota)
+			throws PersistenciaException {
 		mascotas.insert(icon, mascota);
 	}
 
-	public List<VOMascota> listarMascotas(IConexion icon) throws SQLException {
+	public List<VOMascota> listarMascotas(IConexion icon)
+			throws PersistenciaException {
 		return mascotas.listarMascotas(icon);
 	}
 
-	public void borrarMascotas(IConexion icon) throws SQLException {
+	public void borrarMascotas(IConexion icon) throws PersistenciaException {
 		mascotas.borrarMascotas(icon);
 	}
 }
