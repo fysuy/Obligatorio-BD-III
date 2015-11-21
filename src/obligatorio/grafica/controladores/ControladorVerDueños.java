@@ -12,7 +12,6 @@ public class ControladorVerDueños {
 
 		Object[][] data = null;
 
-		// VODueño[] dueños = {new VODueño(44478897, "Alex", "Kalayjian")} ;
 		VODueño[] dueños = (VODueño[]) Fachada.getInstance().listarDueños()
 				.toArray();
 
