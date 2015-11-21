@@ -45,24 +45,23 @@ public class DaoDueñosSQL implements IDaoDueños {
 		return existe;
 	}
 
-	public int insert(IConexion ic, Dueño dueño) throws PersistenciaException {
+	public void insert(IConexion ic, Dueño dueño) throws PersistenciaException {
 		Consultas consultas = new Consultas();
 		String insert = consultas.insertarDueño();
-		int rs;
-
+	
 		try {
 			PreparedStatement pstmt = (PreparedStatement) ((ConexionMySQL) ic)
 					.getCon().prepareStatement(insert);
 			pstmt.setInt(1, dueño.getCedula());
 			pstmt.setString(2, dueño.getNombre());
 			pstmt.setString(3, dueño.getApellido());
-			rs = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
 			throw new PersistenciaException(e.getMessage());
 		}
 
-		return rs;
+	
 	}
 
 	public Dueño find(IConexion ic, int cedula) throws PersistenciaException {

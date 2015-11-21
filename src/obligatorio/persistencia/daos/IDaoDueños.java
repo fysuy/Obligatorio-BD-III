@@ -10,7 +10,7 @@ import obligatorio.util.IConexion;
 public interface IDaoDueños {
 	public boolean member(IConexion ic, int ci) throws PersistenciaException;
 
-	public int insert(IConexion ic, Dueño dueño) throws PersistenciaException;
+	public void insert(IConexion ic, Dueño dueño) throws PersistenciaException;
 
 	public Dueño find(IConexion ic, int cedula) throws PersistenciaException;
 
