@@ -5,6 +5,7 @@ import java.util.List;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.valueObjects.VOMascota;
 import obligatorio.persistencia.daos.IDaoMascotas;
+import obligatorio.persistencia.daos.MySQL.DaoMascotasSQL;
 import obligatorio.util.IConexion;
 
 public class Dueño {
@@ -18,15 +19,9 @@ public class Dueño {
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
-	}
-
-	public Dueño(int cedula, String nombre, String apellido,
-			IDaoMascotas mascotas) {
-		super();
-		this.cedula = cedula;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.mascotas = mascotas;
+		
+		//TODO: cambiarlo por la factory!
+		this.mascotas = new DaoMascotasSQL(this.cedula);
 	}
 
 	public int getCedula() {

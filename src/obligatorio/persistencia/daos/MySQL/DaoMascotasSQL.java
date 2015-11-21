@@ -51,7 +51,7 @@ public class DaoMascotasSQL implements IDaoMascotas {
 	public int insert(IConexion ic, Mascota mascota)
 			throws PersistenciaException {
 		Consultas consultas = new Consultas();
-		String insert = consultas.insertarDueño();
+		String insert = consultas.insertarMascota();
 
 		int rs;
 		try {

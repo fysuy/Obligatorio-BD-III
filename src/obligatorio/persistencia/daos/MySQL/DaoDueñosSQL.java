@@ -67,7 +67,7 @@ public class DaoDueñosSQL implements IDaoDueños {
 	public Dueño find(IConexion ic, int cedula) throws PersistenciaException {
 		Consultas consultas = new Consultas();
 		String query = consultas.obtenerDueño();
-		Dueño dueño;
+		Dueño dueño = null;
 
 		try {
 			PreparedStatement pstmt = (PreparedStatement) ((ConexionMySQL) ic)
@@ -75,9 +75,11 @@ public class DaoDueñosSQL implements IDaoDueños {
 			pstmt.setInt(1, cedula);
 			ResultSet rs = pstmt.executeQuery();
 
-			String nombre = rs.getString("nombre");
-			String apellido = rs.getString("apellido");
-			dueño = new Dueño(cedula, nombre, apellido);
+			if(rs.next()) {
+				String nombre = rs.getString("nombre");
+				String apellido = rs.getString("apellido");
+				dueño = new Dueño(cedula, nombre, apellido);
+			}
 
 			rs.close();
 			pstmt.close();
