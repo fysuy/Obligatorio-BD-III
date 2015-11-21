@@ -7,11 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.LinkedList;
 
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.Mascota;
-import obligatorio.logica.exceptions.MascotaException;
 import obligatorio.logica.valueObjects.VOMascota;
 import obligatorio.persistencia.daos.IDaoMascotas;
 import obligatorio.util.IConexion;
@@ -35,7 +34,7 @@ private int cedula;
 	}
 	
 	
-	public boolean member(String apodo, IConexion con) throws SQLException {
+	public boolean member(IConexion ic, String apodo) throws PersistenciaException {
 		boolean isMember=false;
 		File fichero=new File(ruta+apodo+"-"+cedula+extension);
 		if(fichero.exists()){
@@ -54,7 +53,7 @@ private int cedula;
 	}
 
 	@Override
-	public int insert (IConexion ic, Mascota mascota) throws MascotaException {
+	public int insert (IConexion ic, Mascota mascota) throws PersistenciaException {
 		File fichero=new File(ruta+mascota.getApodo()+"-"+cedula+extension);
 		if(!fichero.exists()){
 			PrintWriter pw = null;
@@ -76,7 +75,7 @@ private int cedula;
 		
 
 	@Override
-	public LinkedList <VOMascota> listarMascotas(IConexion con) throws MascotaException
+	public LinkedList <VOMascota> listarMascotas(IConexion con) throws PersistenciaException
 	{
 		LinkedList<VOMascota> list=new LinkedList<VOMascota>();
 		try {
@@ -104,16 +103,16 @@ private int cedula;
 			}
 			//TODO - Anlizar caso
 		} catch (FileNotFoundException e) {
-			throw new MascotaException("Se produjo un error: no se encontro archivo.");
+			throw new PersistenciaException("Se produjo un error: no se encontro archivo.");
 		} catch (IOException e) {
-			throw new MascotaException("Se produjo un error en IO");
+			throw new PersistenciaException("Se produjo un error en IO");
 		}
 		return list;
 	}
 		
 
 	@Override
-	public void borrarMascotas(IConexion con) throws MascotaException {
+	public void borrarMascotas(IConexion con)  {
 		File dir=new File(ruta);
 		File[] listaDeArchivos=dir.listFiles();
 		int cantFiles=listaDeArchivos.length;
@@ -127,11 +126,6 @@ private int cedula;
 		}
 	}
 
-	@Override
-	public boolean member(IConexion ic, String apodo) throws MascotaException {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 
 }
