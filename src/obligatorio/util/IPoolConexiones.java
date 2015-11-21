@@ -1,11 +1,12 @@
 package obligatorio.util;
 
-import java.sql.SQLException;
+import obligatorio.exceptions.PersistenciaException;
 
 public interface IPoolConexiones {
 
 	public IConexion obtenerConexion(boolean modifica)
-			throws InterruptedException, SQLException;
+			throws PersistenciaException;
 
-	public void liberarConexion(IConexion ic, boolean ok);
+	public void liberarConexion(IConexion ic, boolean ok)
+			throws PersistenciaException;
 }
