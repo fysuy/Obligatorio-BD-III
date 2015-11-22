@@ -13,7 +13,6 @@ public class ControladorVerMascotas {
 
 	public Object[][] listarMascotas(int cedula) throws LogicaException,
 			PersistenciaException, DueñoException {
-		Object[][] data = null;
 
 		List<VOMascota> mascotas = Fachada.getInstance().listarMascotas(cedula);
 		int total = mascotas.size();

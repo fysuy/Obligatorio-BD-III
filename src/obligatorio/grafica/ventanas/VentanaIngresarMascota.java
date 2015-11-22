@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ import javax.swing.SwingConstants;
 
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.MascotaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.grafica.controladores.ControladorIngresarMascota;
 
@@ -156,7 +158,7 @@ public class VentanaIngresarMascota {
 							textFieldRaza.setText("");
 							textFieldApodo.setText("");
 
-						} catch (LogicaException | PersistenciaException | DueñoException e) {
+						} catch (LogicaException | PersistenciaException | DueñoException | MascotaException | IOException e) {
 							JOptionPane.showMessageDialog(frame,
 									e.getMessage());
 						}
