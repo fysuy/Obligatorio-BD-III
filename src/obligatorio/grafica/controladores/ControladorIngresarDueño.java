@@ -1,5 +1,7 @@
 package obligatorio.grafica.controladores;
 
+import java.rmi.RemoteException;
+
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
@@ -11,7 +13,7 @@ public class ControladorIngresarDueño {
 	private Fachada fachada;
 
 	public void ingresarDueño(int cedula, String nombre, String apellido)
-			throws DueñoException, PersistenciaException, LogicaException {
+			throws DueñoException, PersistenciaException, LogicaException, RemoteException {
 		fachada = Fachada.getInstance();
 		VODueño voDueño = new VODueño(cedula, nombre, apellido);
 		fachada.nuevoDueño(voDueño);

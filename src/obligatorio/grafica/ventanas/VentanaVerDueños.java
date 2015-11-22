@@ -3,6 +3,7 @@ package obligatorio.grafica.ventanas;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.rmi.RemoteException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -48,7 +49,7 @@ public class VentanaVerDueños {
 			data = controlador.listarDueños();
 			initialize();
 
-		} catch (LogicaException | PersistenciaException e) {
+		} catch (LogicaException | PersistenciaException | RemoteException e) {
 			JOptionPane.showMessageDialog(frame,
 					"No se pudo establecer la conexión.");
 		}

@@ -1,6 +1,6 @@
 package obligatorio.grafica.controladores;
 
-import java.io.IOException;
+import java.rmi.RemoteException;
 
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
@@ -16,7 +16,7 @@ public class ControladorIngresarMascota {
 
 	public void ingresarMascota(int cedulaDueño, String apodo, String raza)
 			throws LogicaException, PersistenciaException, DueñoException,
-			MascotaException {
+			MascotaException, RemoteException {
 		fachada = Fachada.getInstance();
 		VOMascota voMascota = new VOMascota(raza, apodo, cedulaDueño);
 		fachada.nuevaMascota(voMascota);

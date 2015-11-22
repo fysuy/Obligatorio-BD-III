@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -109,18 +110,16 @@ public class VentanaVerMascotas {
 
 		controlador = new ControladorVerMascotas();
 
-		
 		panelTabla = new JPanel();
 		panelTabla.setLayout(new BorderLayout(0, 0));
-		sl_panel.putConstraint(SpringLayout.NORTH,
-				panelTabla, 23, SpringLayout.SOUTH,
-				labelCedulaDueño);
-		sl_panel.putConstraint(SpringLayout.WEST,
-				panelTabla, 0, SpringLayout.WEST, panel);
-		sl_panel.putConstraint(SpringLayout.EAST,
-				panelTabla, 0, SpringLayout.EAST, panel);
+		sl_panel.putConstraint(SpringLayout.NORTH, panelTabla, 23,
+				SpringLayout.SOUTH, labelCedulaDueño);
+		sl_panel.putConstraint(SpringLayout.WEST, panelTabla, 0,
+				SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, panelTabla, 0,
+				SpringLayout.EAST, panel);
 		panel.add(panelTabla);
-		
+
 		btnVerMascotas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 
@@ -150,7 +149,7 @@ public class VentanaVerMascotas {
 						try {
 							data = controlador.listarMascotas(cedula);
 							panelTabla.removeAll();
-							
+
 							tableMascotas = new JTable(data, columnas);
 							tableMascotas.setEnabled(false);
 
@@ -163,9 +162,9 @@ public class VentanaVerMascotas {
 							panelTabla.repaint();
 
 							textFieldCedulaDueño.setText("");
-							
 
-						} catch (LogicaException | PersistenciaException | DueñoException e) {
+						} catch (LogicaException | PersistenciaException
+								| RemoteException | DueñoException e) {
 							// Muestra el error
 							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
