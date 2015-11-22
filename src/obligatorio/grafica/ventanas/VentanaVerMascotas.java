@@ -144,8 +144,7 @@ public class VentanaVerMascotas {
 					}
 
 					// CI válida
-					// FIXME: cedula > 0
-					if (cedula != -1) {
+					if (cedula > 0) {
 
 						// Crea la tabla con las mascotas del dueño
 						try {
@@ -170,6 +169,10 @@ public class VentanaVerMascotas {
 							// Muestra el error
 							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
+					} else {
+						JOptionPane.showMessageDialog(frame,
+								"El número de cédula es inválido.", "Cédula inválida",
+								JOptionPane.ERROR_MESSAGE);
 					}
 
 				} else {

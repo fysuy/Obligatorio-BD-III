@@ -39,7 +39,7 @@ public class DaoMascotasArchivo implements IDaoMascotas {
 	}
 
 	public boolean member(IConexion ic, String apodo)
-			throws PersistenciaException, IOException {
+			throws PersistenciaException {
 		
 		boolean existe = false;
 		String fileName = nombreArchivo(cedulaDuenio);
@@ -48,23 +48,27 @@ public class DaoMascotasArchivo implements IDaoMascotas {
 		// Si existe el archivo con mascotas 
 		// busca la mascota con el apodo pasado como parametro
 		if (archivoMascotas.exists()) {
-						
-			BufferedReader br = new BufferedReader(new FileReader(fileName));
 			
-			@SuppressWarnings("unused")
-			String cedulaDuenio, apodoMascota, razaMascota;
-			String linea;
-			
-			while ((linea = br.readLine()) != null && existe == false) {
-				cedulaDuenio = linea;
-				apodoMascota = br.readLine();
-				if (apodoMascota.equals(apodo)) {
-					existe = true;
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(fileName));
+				
+				String apodoMascota;
+
+				// El br.readLine() del while lee la cedula y avanza el cursor
+				while (br.readLine() != null && existe == false) {
+					
+					apodoMascota = br.readLine(); 	// lee el apodo y avanza el cursor
+					if (apodoMascota.equals(apodo)) {
+						existe = true;
+					}
+					br.readLine();		// Lee la raza y avanza el cursor
 				}
-				razaMascota = br.readLine();		
+
+				br.close();
 			}
-			
-			br.close();
+			catch (IOException e) {
+				throw new PersistenciaException("Se produjo un error: " + e.getMessage());
+			}
 		}
 		return existe;
 	}
