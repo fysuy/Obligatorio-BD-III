@@ -17,7 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import com.sun.xml.internal.ws.api.message.Message;
+
+import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.grafica.controladores.ControladorBorrarDueñoMascota;
 
 public class VentanaBorrarDueñoMascotas {
@@ -110,7 +114,10 @@ public class VentanaBorrarDueñoMascotas {
 
 						try {
 							controlador.borrarDueñoMascota(cedula);
-						} catch (LogicaException e) {
+							JOptionPane.showMessageDialog(frame, "Se borró el dueño y todas sus mascotas.", "Dueño borrado", JOptionPane.PLAIN_MESSAGE);
+							textFieldCedulaDueño.setText("");
+							
+						} catch (LogicaException | PersistenciaException | DueñoException e) {
 							JOptionPane.showMessageDialog(frame,
 									e.getMessage());
 						}

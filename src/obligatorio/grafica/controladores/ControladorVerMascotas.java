@@ -1,22 +1,24 @@
 package obligatorio.grafica.controladores;
 
+
+
+import java.util.List;
+
+import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.Fachada;
 import obligatorio.logica.valueObjects.VOMascota;
 
 
 public class ControladorVerMascotas {
 
-	public Object[][] listarMascotas(int cedula) throws LogicaException {
+	public Object[][] listarMascotas(int cedula) throws LogicaException, PersistenciaException, DueñoException {
 
-		Object[][] data = null;
+		Object[][] data;
 
-		// VOMascota[] mascotas = {} ;
-
-		// VOMascota[] mascotas = {new VOMascota("Salchicha", "Pipe", 1234567)}
-		// ;
-		VOMascota[] mascotas = (VOMascota[]) Fachada.getInstance()
-				.listarMascotas(cedula).toArray();
+		List<VOMascota> listaMascotas = Fachada.getInstance().listarMascotas(cedula);
+		VOMascota[] mascotas = listaMascotas.toArray(new VOMascota[listaMascotas.size()]);
 
 		if (mascotas.length != 0) {
 

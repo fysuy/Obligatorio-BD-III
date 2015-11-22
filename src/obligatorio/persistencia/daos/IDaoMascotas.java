@@ -1,5 +1,6 @@
 package obligatorio.persistencia.daos;
 
+import java.io.IOException;
 import java.util.List;
 
 import obligatorio.exceptions.PersistenciaException;
@@ -9,7 +10,7 @@ import obligatorio.util.IConexion;
 
 public interface IDaoMascotas {
 	public boolean member(IConexion ic, String apodo)
-			throws PersistenciaException;
+			throws PersistenciaException, IOException;
 
 	public int insert(IConexion ic, Mascota mascota)
 			throws PersistenciaException;

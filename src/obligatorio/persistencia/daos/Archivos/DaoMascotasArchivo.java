@@ -4,10 +4,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.Mascota;
@@ -17,100 +21,123 @@ import obligatorio.util.IConexion;
 
 public class DaoMascotasArchivo implements IDaoMascotas {
 
-	private int cedula;
+	private int cedulaDuenio;
 
 	private static String extension = ".txt";
-	private static String ruta = "data/Mascotas/";
+	private static String ruta = "./data/";
+	private static String prefijo = "mascotas-";
 
 	public DaoMascotasArchivo() {
 
 	}
+	
+	public DaoMascotasArchivo(int cedula) {
+		this.cedulaDuenio = cedula;
+	}
 
 	public void setCedulaDuenio(int cedula) {
-		this.cedula = cedula;
-
+		this.cedulaDuenio = cedula;
 	}
 
 	public boolean member(IConexion ic, String apodo)
-			throws PersistenciaException {
-		boolean isMember = false;
-		File fichero = new File(ruta + apodo + "-" + cedula + extension);
-		if (fichero.exists()) {
-			isMember = true;
-		} else {
-			File dir = new File(ruta);
-			String[] listaDeArchivos = dir.list();
-			int cantFiles = listaDeArchivos.length;
-
-			for (int i = 0; i < cantFiles; i++) {
-				if (listaDeArchivos[i].startsWith(apodo))
-					isMember = true;
+			throws PersistenciaException, IOException {
+		
+		boolean existe = false;
+		String fileName = nombreArchivo(cedulaDuenio);
+		File archivoMascotas = new File(fileName);
+		
+		// Si existe el archivo con mascotas 
+		// busca la mascota con el apodo pasado como parametro
+		if (archivoMascotas.exists()) {
+						
+			BufferedReader br = new BufferedReader(new FileReader(fileName));
+			
+			@SuppressWarnings("unused")
+			String cedulaDuenio, apodoMascota, razaMascota;
+			String linea;
+			
+			while ((linea = br.readLine()) != null && existe == false) {
+				cedulaDuenio = linea;
+				apodoMascota = br.readLine();
+				if (apodoMascota.equals(apodo)) {
+					existe = true;
+				}
+				razaMascota = br.readLine();		
 			}
+			
+			br.close();
 		}
-		return isMember;
+		return existe;
 	}
 
 	@Override
 	public int insert(IConexion ic, Mascota mascota)
 			throws PersistenciaException {
-		File fichero = new File(ruta + mascota.getApodo() + "-" + cedula
-				+ extension);
-		if (!fichero.exists()) {
-			PrintWriter pw = null;
-			try {
-				pw = new PrintWriter(new FileWriter(ruta + mascota.getApodo()
-						+ "-" + cedula + extension));
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		
+		try {
+			
+			String cedula = Integer.toString(cedulaDuenio);
+			String apodo = mascota.getApodo();
+			String raza = mascota.getRaza();
+
+			String fileName = nombreArchivo(cedulaDuenio);
+			String data = cedula + "\n" + apodo + "\n" + raza + "\n";
+			
+			Path path = Paths.get(fileName);
+			File archivoMascotas = new File(fileName);
+			// Si ya existe el archivo con las mascotas del dueño hace un APPEND
+			if (archivoMascotas.exists()) {
+				Files.write(path, data.getBytes(), StandardOpenOption.APPEND);
 			}
-			pw.append(mascota.getApodo() + "\n");
-			pw.append(mascota.getRaza() + "\n");
-			pw.append(cedula + "\n");
-			pw.close();
+			else {
+				// Si no existe el archivo con las mascotas del dueño lo crea
+				Files.write(path, data.getBytes());
+			}
+			
+
+		} catch (IOException e) {
+			throw new PersistenciaException("Se produjo un error: "
+					+ e.getMessage());
 		}
-		return cedula;
+		
+		return 1;
 
 	}
 
 	@Override
-	public LinkedList<VOMascota> listarMascotas(IConexion con)
+	public List<VOMascota> listarMascotas(IConexion con)
 			throws PersistenciaException {
-		LinkedList<VOMascota> list = new LinkedList<VOMascota>();
+		
+		ArrayList<VOMascota> mascotas = new ArrayList<VOMascota>();
+		
 		try {
-			File dir = new File(ruta);
-			String[] listaDeArchivos = dir.list();
-			int cantFiles = listaDeArchivos.length;
+			
+			String fileName = nombreArchivo(cedulaDuenio);
+			
+			String apodo, raza;
+			int cedula;
+			String linea;
+			
+			BufferedReader br = new BufferedReader(new FileReader(fileName));;
 
-			String apodo = "";
-			String raza = "";
-			String ced = "";
-			BufferedReader bf;
-
-			for (int i = 0; i < cantFiles; i++) {
-
-				if (listaDeArchivos[i].endsWith(cedula + extension)) {
-					bf = new BufferedReader(new FileReader(ruta
-							+ listaDeArchivos[i]));
-					apodo = bf.readLine(); // TOMO POR DEFECTO QUE LA PRIMERA
-											// LINEA ES EL APODO
-					raza = bf.readLine(); // LA SEGUNDA LA RAZA
-					ced = bf.readLine(); // Y LA TERCERA LA CEDULA DEL DUEÑO
-					VOMascota vom = new VOMascota(apodo, raza,
-							Integer.parseInt(ced));
-					bf.close();
-
-					list.add(vom);
-				}
+			while ((linea = br.readLine()) != null) {
+				
+				cedula = Integer.parseInt(linea);
+				apodo = br.readLine();
+				raza = br.readLine();
+				VOMascota mascota = new VOMascota(raza, apodo, cedula);
+				mascotas.add(mascota);
+				
 			}
-			// TODO - Anlizar caso
+			
+			br.close();
+			
 		} catch (FileNotFoundException e) {
-			throw new PersistenciaException(
-					"Se produjo un error: no se encontro archivo.");
+			
 		} catch (IOException e) {
 			throw new PersistenciaException("Se produjo un error en IO");
 		}
-		return list;
+		return mascotas;
 	}
 
 	@Override
@@ -118,7 +145,7 @@ public class DaoMascotasArchivo implements IDaoMascotas {
 		File dir = new File(ruta);
 		File[] listaDeArchivos = dir.listFiles();
 		int cantFiles = listaDeArchivos.length;
-		String cedString = Integer.toString(cedula);
+		String cedString = Integer.toString(cedulaDuenio);
 		for (int i = 0; i < cantFiles; i++) {
 			String nombreFile = listaDeArchivos[i].getName();
 
@@ -126,6 +153,10 @@ public class DaoMascotasArchivo implements IDaoMascotas {
 				listaDeArchivos[i].delete();
 			}
 		}
+	}
+	
+	private String nombreArchivo(int cedula) {
+		return new String(ruta + prefijo + Integer.toString(cedula) + extension); 
 	}
 
 }
