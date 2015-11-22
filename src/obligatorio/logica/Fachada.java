@@ -113,7 +113,7 @@ public class Fachada {
 	}
 
 	public void borrarDueñoMascotas(int cedulaDueño)
-			throws PersistenciaException, DueñoException {
+			throws PersistenciaException, DueñoException {		
 		IConexion icon = ipool.obtenerConexion(true);
 
 		if (dueños.member(icon, cedulaDueño)) {

@@ -112,6 +112,7 @@ public class VentanaBorrarDueñoMascotas {
 
 						try {
 							controlador.borrarDueñoMascota(cedula);
+							//TODO: imprimir mensaje
 						} catch (LogicaException | PersistenciaException | DueñoException e) {
 							JOptionPane.showMessageDialog(frame,
 									e.getMessage());

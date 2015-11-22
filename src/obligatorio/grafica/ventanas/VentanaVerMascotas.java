@@ -133,6 +133,7 @@ public class VentanaVerMascotas {
 						// Crea la tabla con las mascotas del dueño
 						try {
 							data = controlador.listarMascotas(cedula);
+							//TODO: mostrar grilla con los resultados, solo se ve al resizear
 
 							JTable tableMascotas = new JTable(data, columnas);
 							tableMascotas.setEnabled(false);
