@@ -1,5 +1,7 @@
 package obligatorio.grafica.controladores;
 
+import java.rmi.RemoteException;
+
 import obligatorio.exceptions.LogicaException;
 import obligatorio.logica.Fachada;
 import obligatorio.logica.valueObjects.VOMascota;
@@ -7,7 +9,7 @@ import obligatorio.logica.valueObjects.VOMascota;
 
 public class ControladorVerMascotas {
 
-	public Object[][] listarMascotas(int cedula) throws LogicaException {
+	public Object[][] listarMascotas(int cedula) throws LogicaException, RemoteException {
 
 		Object[][] data = null;
 

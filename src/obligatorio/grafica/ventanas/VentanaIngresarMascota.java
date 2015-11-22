@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -156,7 +157,7 @@ public class VentanaIngresarMascota {
 							textFieldRaza.setText("");
 							textFieldApodo.setText("");
 
-						} catch (LogicaException | PersistenciaException | DueñoException e) {
+						} catch (LogicaException | PersistenciaException | DueñoException | RemoteException e) {
 							JOptionPane.showMessageDialog(frame,
 									e.getMessage());
 						}

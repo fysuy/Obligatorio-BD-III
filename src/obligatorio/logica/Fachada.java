@@ -2,9 +2,12 @@ package obligatorio.logica;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.Properties;
 
+import obligatorio.logica.IFachada;
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
@@ -15,12 +18,14 @@ import obligatorio.util.IConexion;
 import obligatorio.util.IPoolConexiones;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class Fachada {
+public class Fachada extends UnicastRemoteObject implements IFachada {
+	
+	private static final long serialVersionUID = 1L;
 	private static Fachada instance = null;
 	private IDaoDueños dueños;
 	private IPoolConexiones ipool;
 
-	protected Fachada() throws LogicaException {
+	public Fachada() throws LogicaException, RemoteException {
 
 		Properties p = new Properties();
 		String nomArch = "config/config.properties";
@@ -39,7 +44,7 @@ public class Fachada {
 		}
 	}
 
-	public static Fachada getInstance() throws LogicaException {
+	public static Fachada getInstance() throws LogicaException, RemoteException {
 		if (instance == null) {
 			instance = new Fachada();
 		}
