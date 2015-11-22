@@ -158,9 +158,10 @@ public class VentanaIngresarMascota {
 							textFieldRaza.setText("");
 							textFieldApodo.setText("");
 
-						} catch (LogicaException | PersistenciaException | DueñoException | MascotaException | IOException e) {
-							JOptionPane.showMessageDialog(frame,
-									e.getMessage());
+						} catch (LogicaException | PersistenciaException
+								| DueñoException | MascotaException
+								| IOException e) {
+							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
 					}
 
