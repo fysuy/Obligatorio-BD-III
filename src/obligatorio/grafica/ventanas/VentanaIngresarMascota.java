@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -155,15 +157,15 @@ public class VentanaIngresarMascota {
 							textFieldCedulaDueño.setText("");
 							textFieldRaza.setText("");
 							textFieldApodo.setText("");
-
-						} catch (LogicaException | PersistenciaException | DueñoException | MascotaException e) {
-							JOptionPane.showMessageDialog(frame,
-									e.getMessage());
+						} catch (LogicaException | PersistenciaException
+								| DueñoException | MascotaException
+								| RemoteException e) {
+							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
 					} else {
 						JOptionPane.showMessageDialog(frame,
-								"El número de cédula es inválido.", "Cédula inválida",
-								JOptionPane.ERROR_MESSAGE);
+								"El número de cédula es inválido.",
+								"Cédula inválida", JOptionPane.ERROR_MESSAGE);
 					}
 
 				} else {

@@ -1,5 +1,6 @@
 package obligatorio.grafica.controladores;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
 import obligatorio.exceptions.DueñoException;
@@ -11,7 +12,7 @@ import obligatorio.logica.valueObjects.VOMascota;
 public class ControladorVerMascotas {
 
 	public Object[][] listarMascotas(int cedula) throws LogicaException,
-			PersistenciaException, DueñoException {
+			RemoteException, PersistenciaException, DueñoException {
 		Object[][] data = null;
 
 		List<VOMascota> mascotas = Fachada.getInstance().listarMascotas(cedula);

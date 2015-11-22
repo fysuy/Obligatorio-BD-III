@@ -1,6 +1,5 @@
 package obligatorio.persistencia.daos;
 
-import java.io.IOException;
 import java.util.List;
 
 import obligatorio.exceptions.PersistenciaException;
