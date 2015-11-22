@@ -18,7 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.grafica.controladores.ControladorBorrarDueñoMascota;
 
 public class VentanaBorrarDueñoMascotas {
@@ -111,12 +113,18 @@ public class VentanaBorrarDueñoMascotas {
 
 						try {
 							controlador.borrarDueñoMascota(cedula);
+
 						} catch (LogicaException | RemoteException e) {
+
 							JOptionPane.showMessageDialog(frame,
-									e.getMessage());
+									"Se borró el dueño y todas sus mascotas.",
+									"Dueño borrado", JOptionPane.PLAIN_MESSAGE);
+							textFieldCedulaDueño.setText("");
+						} catch (PersistenciaException | DueñoException e) {
+
+							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
 					}
-
 				} else {
 					JOptionPane.showMessageDialog(frame,
 							"Ingresa la CI del dueño.", "Campo obligatorio",

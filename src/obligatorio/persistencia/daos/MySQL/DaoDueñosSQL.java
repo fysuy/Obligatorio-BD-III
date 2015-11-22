@@ -60,8 +60,6 @@ public class DaoDueñosSQL implements IDaoDueños {
 		} catch (SQLException e) {
 			throw new PersistenciaException(e.getMessage());
 		}
-
-	
 	}
 
 	public Dueño find(IConexion ic, int cedula) throws PersistenciaException {
@@ -92,7 +90,7 @@ public class DaoDueñosSQL implements IDaoDueños {
 
 	public void delete(IConexion ic, int cedula) throws PersistenciaException {
 		Consultas consultas = new Consultas();
-		String delete = consultas.borrarDueñoMascotas();
+		String delete = consultas.borrarDueño();
 
 		try {
 			PreparedStatement pstmt = (PreparedStatement) ((ConexionMySQL) ic)

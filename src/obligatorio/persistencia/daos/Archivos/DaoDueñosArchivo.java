@@ -6,10 +6,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +23,13 @@ import obligatorio.util.IConexion;
 public class DaoDueñosArchivo implements IDaoDueños {
 
 	private static String extension = ".txt";
-	private static String ruta = "data/Duenios/";
+	private static String ruta = "./data/";
+	private static String prefijo = "duenio-";
 
 	private DaoMascotasArchivo daoM = new DaoMascotasArchivo();
 
 	public boolean member(IConexion ic, int ced) {
-		File fichero = new File(ruta + Integer.toString(ced) + extension);
+		File fichero = new File(nombreArchivo(ced));
 		return (fichero.exists());
 	}
 
@@ -35,23 +37,19 @@ public class DaoDueñosArchivo implements IDaoDueños {
 
 		try {
 			daoM.setCedulaDuenio(due.getCedula());
-
-			File fichero = new File(ruta + due.getCedula() + extension);
-
+			
 			String ced = Integer.toString(due.getCedula());
 			String nom = due.getNombre();
 			String ape = due.getApellido();
 
-			if (!fichero.exists()) {
-				PrintWriter pw = new PrintWriter(new FileWriter(ruta + ced
-						+ extension));
-				pw.append(ced + "\n");
-				pw.append(nom + "\n");
-				pw.append(ape + "\n");
-				pw.close();
-			}
+			String fileName = nombreArchivo(due.getCedula());
+			String data = ced + "\n" + nom + "\n" + ape + "\n";
+			
+			Path path = Paths.get(fileName);
+			Files.write(path, data.getBytes());
+
 		} catch (IOException e) {
-			throw new PersistenciaException("Se produjo un error:"
+			throw new PersistenciaException("Se produjo un error: "
 					+ e.getMessage());
 		}
 
@@ -61,8 +59,7 @@ public class DaoDueñosArchivo implements IDaoDueños {
 		Dueño due = null;
 		try {
 			// Abrimos el archivo
-			FileInputStream file = new FileInputStream(ruta
-					+ Integer.toString(ced) + extension);
+			FileInputStream file = new FileInputStream(nombreArchivo(ced));
 			// Creamos el objeto de entrada
 			DataInputStream entrada = new DataInputStream(file);
 			// Creamos el Buffer de Lectura
@@ -80,9 +77,9 @@ public class DaoDueñosArchivo implements IDaoDueños {
 
 			due = new Dueño(ced, nom, ape);
 		} catch (FileNotFoundException e) {
-			throw new PersistenciaException("No existe archivo");
+			throw new PersistenciaException("No existe archivo.");
 		} catch (IOException e) {
-			throw new PersistenciaException("Se produjo un error:"
+			throw new PersistenciaException("Se produjo un error: "
 					+ e.getMessage());
 		}
 		return due;
@@ -91,7 +88,7 @@ public class DaoDueñosArchivo implements IDaoDueños {
 	public void delete(IConexion con, int ced) throws PersistenciaException {
 
 		if (this.member(con, ced)) {
-			File ficheroD = new File(ruta + Integer.toString(ced) + extension);
+			File ficheroD = new File(nombreArchivo(ced));
 			ficheroD.delete();
 			// BORRAR LAS MASCOTAS
 			daoM.borrarMascotas(con);
@@ -112,26 +109,32 @@ public class DaoDueñosArchivo implements IDaoDueños {
 			BufferedReader bf;
 
 			for (int i = 0; i < cantFiles; i++) {
+				// Verifico que el archivo sea de un dueño
+				if (listaDeArchivos[i].startsWith(prefijo)) {
+					bf = new BufferedReader(new FileReader(ruta
+							+ listaDeArchivos[i]));
+					ced = bf.readLine();
+					nombre = bf.readLine();
+					apellido = bf.readLine();
 
-				bf = new BufferedReader(new FileReader(ruta
-						+ listaDeArchivos[i]));
-				ced = bf.readLine();
-				nombre = bf.readLine();
-				apellido = bf.readLine();
+					VODueño vod = new VODueño(Integer.parseInt(ced), nombre,
+							apellido);
+					bf.close();
 
-				VODueño vod = new VODueño(Integer.parseInt(ced), nombre,
-						apellido);
-				bf.close();
-
-				list.add(vod);
+					list.add(vod);
+				}
 			}
 		} catch (FileNotFoundException e) {
 			throw new PersistenciaException("No existe archivo");
 		} catch (IOException e) {
-			throw new PersistenciaException("Se produjo un error:"
+			throw new PersistenciaException("Se produjo un error: "
 					+ e.getMessage());
 		}
 		return list;
+	}
+	
+	private String nombreArchivo(int cedula) {
+		return new String(ruta + prefijo + Integer.toString(cedula) + extension); 
 	}
 
 }

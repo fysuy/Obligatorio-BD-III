@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
@@ -19,6 +20,7 @@ import javax.swing.SwingConstants;
 
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.MascotaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.grafica.controladores.ControladorIngresarMascota;
 
@@ -157,9 +159,12 @@ public class VentanaIngresarMascota {
 							textFieldRaza.setText("");
 							textFieldApodo.setText("");
 
-						} catch (LogicaException | PersistenciaException | DueñoException | RemoteException e) {
-							JOptionPane.showMessageDialog(frame,
-									e.getMessage());
+						} catch (RemoteException e) {
+							JOptionPane.showMessageDialog(frame, e.getMessage());
+						} catch (LogicaException | PersistenciaException
+								| DueñoException | MascotaException
+								| IOException e) {
+							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
 					}
 

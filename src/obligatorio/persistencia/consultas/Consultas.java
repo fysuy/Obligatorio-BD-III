@@ -25,9 +25,8 @@ public class Consultas {
 		return insert;
 	}
 
-	public String borrarDueñoMascotas() {
-		String delete = "DELETE FROM Mascotas m WHERE m.cedulaDueño = (?)"
-				+ "DELETE FROM Dueños d WHERE d.cedula = (?)";
+	public String borrarDueño() {
+		String delete = "DELETE FROM Dueños WHERE cedula = (?)";
 		return delete;
 	}
 

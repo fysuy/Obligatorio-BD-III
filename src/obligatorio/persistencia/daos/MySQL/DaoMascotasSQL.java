@@ -14,7 +14,6 @@ import obligatorio.util.IConexion;
 import obligatorio.util.MySQL.ConexionMySQL;
 
 import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
 
 public class DaoMascotasSQL implements IDaoMascotas {
 	private int cedulaDueño;
@@ -75,9 +74,9 @@ public class DaoMascotasSQL implements IDaoMascotas {
 
 		try {
 			PreparedStatement pstmt = (PreparedStatement) ((ConexionMySQL) ic)
-					.getCon().createStatement();
+					.getCon().prepareStatement(delete);
 			pstmt.setInt(1, this.cedulaDueño);
-			pstmt.executeUpdate(delete);
+			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
 			throw new PersistenciaException(e.getMessage());
@@ -91,14 +90,15 @@ public class DaoMascotasSQL implements IDaoMascotas {
 		String queryLista = consultas.listarMascotas();
 
 		try {
-			Statement stmt = (Statement) ((ConexionMySQL) ic).getCon()
-					.createStatement();
-			ResultSet rs = stmt.executeQuery(queryLista);
+			PreparedStatement pstmt = (PreparedStatement) ((ConexionMySQL) ic)
+					.getCon().prepareStatement(queryLista);
+			pstmt.setInt(1, this.cedulaDueño);
+			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				String apodo = rs.getString("apodo");
 				String raza = rs.getString("raza");
-				int ci = rs.getInt("ci");
+				int ci = rs.getInt("cedulaDueño");
 
 				VOMascota pet = new VOMascota(apodo, raza, ci);
 				lista.add(pet);

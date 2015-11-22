@@ -1,5 +1,6 @@
 package obligatorio.logica;
 
+import java.io.IOException;
 import java.util.List;
 
 import obligatorio.exceptions.PersistenciaException;
@@ -19,9 +20,9 @@ public class Dueño {
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
-		
-		//TODO: cambiarlo por la factory!
-		this.mascotas = new DaoMascotasSQL(this.cedula);
+
+		// TODO: cambiarlo por la factory!
+		this.mascotas = new DaoMascotasSQL(cedula);
 	}
 
 	public int getCedula() {
@@ -49,7 +50,8 @@ public class Dueño {
 	}
 
 	public boolean tieneMascota(IConexion icon, String apodo)
-			throws PersistenciaException {
+			throws PersistenciaException, IOException {
+		//TODO: no tiene q tirar IO sino solo persistenciexcetption
 		return mascotas.member(icon, apodo);
 	}
 

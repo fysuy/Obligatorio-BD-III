@@ -18,7 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
+import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.PersistenciaException;
 import obligatorio.grafica.controladores.ControladorVerMascotas;
 
 public class VentanaVerMascotas {
@@ -29,6 +31,7 @@ public class VentanaVerMascotas {
 	private JTextField textFieldCedulaDueño;
 	private SpringLayout sl_panel;
 	private JPanel panel;
+	private JPanel panelTabla;
 	private JLabel labelCedulaDueño;
 
 	/**
@@ -107,10 +110,23 @@ public class VentanaVerMascotas {
 
 		controlador = new ControladorVerMascotas();
 
+		panelTabla = new JPanel();
+		panelTabla.setLayout(new BorderLayout(0, 0));
+		sl_panel.putConstraint(SpringLayout.NORTH, panelTabla, 23,
+				SpringLayout.SOUTH, labelCedulaDueño);
+		sl_panel.putConstraint(SpringLayout.WEST, panelTabla, 0,
+				SpringLayout.WEST, panel);
+		sl_panel.putConstraint(SpringLayout.EAST, panelTabla, 0,
+				SpringLayout.EAST, panel);
+		panel.add(panelTabla);
+
 		btnVerMascotas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 
 				String[] columnas = { "APODO", "RAZA", "CI DUEÑO" };
+				data = null;
+				JTable tableMascotas = new JTable(data, columnas);
+				JScrollPane scrollPane = new JScrollPane(tableMascotas);
 				String strCedula = textFieldCedulaDueño.getText().trim();
 
 				// Verifica que la cedula no esté vacía
@@ -127,35 +143,31 @@ public class VentanaVerMascotas {
 					}
 
 					// CI válida
+					// FIXME: cedula > 0
 					if (cedula != -1) {
 
 						// Crea la tabla con las mascotas del dueño
 						try {
 							data = controlador.listarMascotas(cedula);
+							panelTabla.removeAll();
 
-							JTable tableMascotas = new JTable(data, columnas);
+							tableMascotas = new JTable(data, columnas);
 							tableMascotas.setEnabled(false);
 
-							JScrollPane scrollPane = new JScrollPane(
-									tableMascotas);
+							scrollPane = new JScrollPane(tableMascotas);
 							tableMascotas.getTableHeader()
 									.setReorderingAllowed(false);
 
-							sl_panel.putConstraint(SpringLayout.NORTH,
-									scrollPane, 23, SpringLayout.SOUTH,
-									labelCedulaDueño);
-							sl_panel.putConstraint(SpringLayout.WEST,
-									scrollPane, 0, SpringLayout.WEST, panel);
-							sl_panel.putConstraint(SpringLayout.EAST,
-									scrollPane, 0, SpringLayout.EAST, panel);
-							panel.add(scrollPane);
+							panelTabla.add(scrollPane);
+							panelTabla.revalidate();
+							panelTabla.repaint();
 
 							textFieldCedulaDueño.setText("");
 
-						} catch (LogicaException | RemoteException e) {
+						} catch (LogicaException | PersistenciaException
+								| RemoteException | DueñoException e) {
 							// Muestra el error
-							JOptionPane.showMessageDialog(frame,
-									e.getMessage());
+							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
 					}
 
