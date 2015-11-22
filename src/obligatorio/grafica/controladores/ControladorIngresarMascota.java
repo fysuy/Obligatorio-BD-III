@@ -15,7 +15,8 @@ public class ControladorIngresarMascota {
 	private Fachada fachada;
 
 	public void ingresarMascota(int cedulaDueño, String apodo, String raza)
-			throws LogicaException, PersistenciaException, DueñoException, MascotaException, IOException {
+			throws LogicaException, PersistenciaException, DueñoException,
+			MascotaException, IOException {
 		fachada = Fachada.getInstance();
 		VOMascota voMascota = new VOMascota(raza, apodo, cedulaDueño);
 		fachada.nuevaMascota(voMascota);

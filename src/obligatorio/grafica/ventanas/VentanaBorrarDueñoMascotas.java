@@ -17,11 +17,6 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
-<<<<<<< HEAD
-=======
-import com.sun.xml.internal.ws.api.message.Message;
-
->>>>>>> c82317d7fe40e9da4c6337a235c7132dbf972a25
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
@@ -117,19 +112,13 @@ public class VentanaBorrarDueñoMascotas {
 
 						try {
 							controlador.borrarDueñoMascota(cedula);
-<<<<<<< HEAD
-							//TODO: imprimir mensaje
-=======
 							JOptionPane.showMessageDialog(frame, "Se borró el dueño y todas sus mascotas.", "Dueño borrado", JOptionPane.PLAIN_MESSAGE);
 							textFieldCedulaDueño.setText("");
-							
->>>>>>> c82317d7fe40e9da4c6337a235c7132dbf972a25
 						} catch (LogicaException | PersistenciaException | DueñoException e) {
 							JOptionPane.showMessageDialog(frame,
 									e.getMessage());
 						}
 					}
-
 				} else {
 					JOptionPane.showMessageDialog(frame,
 							"Ingresa la CI del dueño.", "Campo obligatorio",
