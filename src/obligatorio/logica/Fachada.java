@@ -77,17 +77,18 @@ public class Fachada {
 		IConexion icon = ipool.obtenerConexion(true);
 
 		if (dueños.member(icon, cedulaDueño)) {
-			
+
 			Dueño dueño = dueños.find(icon, cedulaDueño);
-			
+
 			if (!dueño.tieneMascota(icon, apodo)) {
-				Mascota mascota = new Mascota(raza, apodo);	
+				Mascota mascota = new Mascota(raza, apodo);
 				dueño.addMascota(icon, mascota);
 			} else {
 				ipool.liberarConexion(icon, true);
-				throw new MascotaException("Error: este dueño ya tiene una mascota registrada con ese apodo.");
+				throw new MascotaException(
+						"Error: este dueño ya tiene una mascota registrada con ese apodo.");
 			}
-			
+
 		} else {
 			ipool.liberarConexion(icon, true);
 			throw new DueñoException("Error: no existe el dueño");
@@ -114,10 +115,8 @@ public class Fachada {
 		if (dueños.member(icon, cedulaDueño)) {
 			result = dueños.find(icon, cedulaDueño).listarMascotas(icon);
 		} else {
-			throw new DueñoException("Error: no existe dueño");
 			ipool.liberarConexion(icon, true);
 			throw new DueñoException("Error: no existe el dueño.");
-		}
 		}
 
 		ipool.liberarConexion(icon, true);
@@ -125,7 +124,7 @@ public class Fachada {
 	}
 
 	public void borrarDueñoMascotas(int cedulaDueño)
-			throws PersistenciaException, DueñoException {		
+			throws PersistenciaException, DueñoException {
 		IConexion icon = ipool.obtenerConexion(true);
 
 		if (dueños.member(icon, cedulaDueño)) {
@@ -134,7 +133,7 @@ public class Fachada {
 		} else {
 			throw new DueñoException("Error: no existe dueño");
 		}
-		
+
 		ipool.liberarConexion(icon, true);
 	}
 }
