@@ -143,12 +143,12 @@ public class VentanaIngresarDueño {
 						cedula = Integer.parseInt(strCedula);
 					} catch (NumberFormatException e) {
 						JOptionPane.showMessageDialog(frame,
-								"Formato de cédula inválido.", "",
+								"Formato de cédula inválido.", "Cédula inválida",
 								JOptionPane.ERROR_MESSAGE);
 					}
 
 					// CI válida
-					if (cedula != -1) {
+					if (cedula > 0) {
 
 						try {
 							controlador.ingresarDueño(cedula, nombre, apellido);
@@ -163,6 +163,10 @@ public class VentanaIngresarDueño {
 								| PersistenciaException e) {
 							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}
+					} else {
+						JOptionPane.showMessageDialog(frame,
+								"El número de cédula es inválido.", "Cédula inválida",
+								JOptionPane.ERROR_MESSAGE);
 					}
 
 				} else {

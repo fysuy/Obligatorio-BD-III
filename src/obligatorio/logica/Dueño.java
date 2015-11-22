@@ -6,6 +6,7 @@ import java.util.List;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.valueObjects.VOMascota;
 import obligatorio.persistencia.daos.IDaoMascotas;
+import obligatorio.persistencia.daos.Archivos.DaoMascotasArchivo;
 import obligatorio.persistencia.daos.MySQL.DaoMascotasSQL;
 import obligatorio.util.IConexion;
 
@@ -22,7 +23,7 @@ public class Dueño {
 		this.apellido = apellido;
 
 		// TODO: cambiarlo por la factory!
-		this.mascotas = new DaoMascotasSQL(cedula);
+		this.mascotas = new DaoMascotasArchivo(cedula);
 	}
 
 	public int getCedula() {
@@ -50,7 +51,7 @@ public class Dueño {
 	}
 
 	public boolean tieneMascota(IConexion icon, String apodo)
-			throws PersistenciaException, IOException {
+			throws PersistenciaException {
 		//TODO: no tiene q tirar IO sino solo persistenciexcetption
 		return mascotas.member(icon, apodo);
 	}

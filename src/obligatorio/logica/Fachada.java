@@ -69,7 +69,7 @@ public class Fachada {
 	}
 
 	public void nuevaMascota(VOMascota pMascota) throws PersistenciaException,
-			DueñoException, MascotaException, IOException {
+			DueñoException, MascotaException {
 		String apodo = pMascota.getApodo();
 		int cedulaDueño = pMascota.getCedulaDueño();
 		String raza = pMascota.getRaza();
@@ -131,6 +131,7 @@ public class Fachada {
 			dueños.find(icon, cedulaDueño).borrarMascotas(icon);
 			dueños.delete(icon, cedulaDueño);
 		} else {
+			ipool.liberarConexion(icon, true);
 			throw new DueñoException("Error: no existe dueño");
 		}
 

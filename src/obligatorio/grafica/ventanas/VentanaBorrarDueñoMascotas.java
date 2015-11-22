@@ -108,7 +108,7 @@ public class VentanaBorrarDueñoMascotas {
 					}
 
 					// CI válida
-					if (cedula != -1) {
+					if (cedula > 0) {
 
 						try {
 							controlador.borrarDueñoMascota(cedula);
@@ -118,6 +118,10 @@ public class VentanaBorrarDueñoMascotas {
 							JOptionPane.showMessageDialog(frame,
 									e.getMessage());
 						}
+					} else {
+						JOptionPane.showMessageDialog(frame,
+								"El número de cédula es inválido.", "Cédula inválida",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
 					JOptionPane.showMessageDialog(frame,

@@ -10,7 +10,7 @@ import obligatorio.util.IConexion;
 
 public interface IDaoMascotas {
 	public boolean member(IConexion ic, String apodo)
-			throws PersistenciaException, IOException;
+			throws PersistenciaException;
 
 	public int insert(IConexion ic, Mascota mascota)
 			throws PersistenciaException;
