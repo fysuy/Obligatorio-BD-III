@@ -74,9 +74,9 @@ public class DaoMascotasSQL implements IDaoMascotas {
 
 		try {
 			PreparedStatement pstmt = (PreparedStatement) ((ConexionMySQL) ic)
-					.getCon().createStatement();
+					.getCon().prepareStatement(delete);
 			pstmt.setInt(1, this.cedulaDueño);
-			pstmt.executeUpdate(delete);
+			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
 			throw new PersistenciaException(e.getMessage());

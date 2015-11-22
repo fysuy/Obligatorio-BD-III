@@ -13,7 +13,6 @@ import obligatorio.logica.valueObjects.VOMascota;
 import obligatorio.persistencia.daos.IDaoDueños;
 import obligatorio.util.IConexion;
 import obligatorio.util.IPoolConexiones;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Fachada {
 	private static Fachada instance = null;
@@ -90,29 +89,40 @@ public class Fachada {
 
 	public List<VODueño> listarDueños() throws PersistenciaException {
 		IConexion icon = ipool.obtenerConexion(true);
-		return dueños.listarDueños(icon);
+		List<VODueño> result;
+
+		result = dueños.listarDueños(icon);
+		ipool.liberarConexion(icon, true);
+
+		return result;
 	}
 
 	public List<VOMascota> listarMascotas(int cedulaDueño)
 			throws PersistenciaException, DueñoException {
 		IConexion icon = ipool.obtenerConexion(true);
+		List<VOMascota> result;
 
 		if (dueños.member(icon, cedulaDueño)) {
-			return dueños.find(icon, cedulaDueño).listarMascotas(icon);
+			result = dueños.find(icon, cedulaDueño).listarMascotas(icon);
 		} else {
 			throw new DueñoException("Error: no existe dueño");
 		}
+
+		ipool.liberarConexion(icon, true);
+		return result;
 	}
 
-	public void borrarDueñoMascotas(int cedulaDueño) {
-		throw new NotImplementedException();
-		// IConexion icon = pool.obtenerConexion(true);
-		//
-		// if (dueños.member(icon, cedulaDueño)) {
-		// dueños.find(icon, cedulaDueño).borrarMascotas(icon);
-		// dueños.delete(icon, cedulaDueño);
-		// } else {
-		// throw new DueñoException("Error: no existe dueño");
-		// }
+	public void borrarDueñoMascotas(int cedulaDueño)
+			throws PersistenciaException, DueñoException {
+		IConexion icon = ipool.obtenerConexion(true);
+
+		if (dueños.member(icon, cedulaDueño)) {
+			dueños.find(icon, cedulaDueño).borrarMascotas(icon);
+			dueños.delete(icon, cedulaDueño);
+		} else {
+			throw new DueñoException("Error: no existe dueño");
+		}
+		
+		ipool.liberarConexion(icon, true);
 	}
 }

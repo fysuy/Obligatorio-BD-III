@@ -90,7 +90,7 @@ public class DaoDueñosSQL implements IDaoDueños {
 
 	public void delete(IConexion ic, int cedula) throws PersistenciaException {
 		Consultas consultas = new Consultas();
-		String delete = consultas.borrarDueñoMascotas();
+		String delete = consultas.borrarDueño();
 
 		try {
 			PreparedStatement pstmt = (PreparedStatement) ((ConexionMySQL) ic)
