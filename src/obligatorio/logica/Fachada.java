@@ -7,6 +7,7 @@ import java.util.Properties;
 
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
+import obligatorio.exceptions.MascotaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.valueObjects.VODueño;
 import obligatorio.logica.valueObjects.VOMascota;
@@ -61,14 +62,14 @@ public class Fachada {
 		} else {
 			ipool.liberarConexion(icon, true);
 			throw new DueñoException(
-					"Error: ya existe el dueño con el numero de cedula ingresado.");
+					"Error: ya existe el dueño con la cédula ingresada.");
 		}
 
 		ipool.liberarConexion(icon, true);
 	}
 
 	public void nuevaMascota(VOMascota pMascota) throws PersistenciaException,
-			DueñoException {
+			DueñoException, MascotaException, IOException {
 		String apodo = pMascota.getApodo();
 		int cedulaDueño = pMascota.getCedulaDueño();
 		String raza = pMascota.getRaza();
@@ -76,12 +77,20 @@ public class Fachada {
 		IConexion icon = ipool.obtenerConexion(true);
 
 		if (dueños.member(icon, cedulaDueño)) {
+			
 			Dueño dueño = dueños.find(icon, cedulaDueño);
-			Mascota mascota = new Mascota(raza, apodo);
-
-			dueño.addMascota(icon, mascota);
+			
+			if (!dueño.tieneMascota(icon, apodo)) {
+				Mascota mascota = new Mascota(raza, apodo);	
+				dueño.addMascota(icon, mascota);
+			} else {
+				ipool.liberarConexion(icon, true);
+				throw new MascotaException("Error: este dueño ya tiene una mascota registrada con ese apodo.");
+			}
+			
 		} else {
-			throw new DueñoException("Error: no existe dueño");
+			ipool.liberarConexion(icon, true);
+			throw new DueñoException("Error: no existe el dueño");
 		}
 
 		ipool.liberarConexion(icon, true);
@@ -106,6 +115,9 @@ public class Fachada {
 			result = dueños.find(icon, cedulaDueño).listarMascotas(icon);
 		} else {
 			throw new DueñoException("Error: no existe dueño");
+			ipool.liberarConexion(icon, true);
+			throw new DueñoException("Error: no existe el dueño.");
+		}
 		}
 
 		ipool.liberarConexion(icon, true);
