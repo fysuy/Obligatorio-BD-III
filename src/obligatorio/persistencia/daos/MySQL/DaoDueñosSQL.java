@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.Dueño;
 import obligatorio.logica.valueObjects.VODueño;
@@ -62,7 +63,7 @@ public class DaoDueñosSQL implements IDaoDueños {
 		}
 	}
 
-	public Dueño find(IConexion ic, int cedula) throws PersistenciaException {
+	public Dueño find(IConexion ic, int cedula) throws PersistenciaException, LogicaException {
 		Consultas consultas = new Consultas();
 		String query = consultas.obtenerDueño();
 		Dueño dueño = null;

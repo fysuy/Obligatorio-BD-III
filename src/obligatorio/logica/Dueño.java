@@ -1,11 +1,16 @@
 package obligatorio.logica;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
+import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.valueObjects.VOMascota;
+import obligatorio.persistencia.IAbstractFactory;
 import obligatorio.persistencia.daos.IDaoMascotas;
-import obligatorio.persistencia.daos.Archivos.DaoMascotasArchivo;
 import obligatorio.util.IConexion;
 
 public class Dueño {
@@ -14,14 +19,28 @@ public class Dueño {
 	private String apellido;
 	private IDaoMascotas mascotas;
 
-	public Dueño(int cedula, String nombre, String apellido) {
+	public Dueño(int cedula, String nombre, String apellido)
+			throws LogicaException {
 		super();
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
 
-		// TODO: cambiarlo por la factory!
-		this.mascotas = new DaoMascotasArchivo(cedula);
+		try {
+			Properties p = new Properties();
+			String nomArch = "config/config.properties";
+			p.load(new FileInputStream(nomArch));
+			String concreteFactory = p.getProperty("logica.factory");
+
+			IAbstractFactory factory = (IAbstractFactory) (Class
+					.forName(concreteFactory).newInstance());
+			this.mascotas = factory.crearDaoMascotas(this.cedula);
+		} catch (FileNotFoundException e) {
+			throw new LogicaException(e.getMessage());
+		} catch (InstantiationException | IllegalAccessException
+				| ClassNotFoundException | IOException e) {
+			throw new LogicaException(e.getMessage());
+		}
 	}
 
 	public int getCedula() {
@@ -50,7 +69,6 @@ public class Dueño {
 
 	public boolean tieneMascota(IConexion icon, String apodo)
 			throws PersistenciaException {
-		//TODO: no tiene q tirar IO sino solo persistenciexcetption
 		return mascotas.member(icon, apodo);
 	}
 

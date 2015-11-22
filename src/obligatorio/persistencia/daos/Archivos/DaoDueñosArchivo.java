@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.Dueño;
 import obligatorio.logica.valueObjects.VODueño;
@@ -37,14 +38,14 @@ public class DaoDueñosArchivo implements IDaoDueños {
 
 		try {
 			daoM.setCedulaDuenio(due.getCedula());
-			
+
 			String ced = Integer.toString(due.getCedula());
 			String nom = due.getNombre();
 			String ape = due.getApellido();
 
 			String fileName = nombreArchivo(due.getCedula());
 			String data = ced + "\n" + nom + "\n" + ape + "\n";
-			
+
 			Path path = Paths.get(fileName);
 			Files.write(path, data.getBytes());
 
@@ -55,7 +56,8 @@ public class DaoDueñosArchivo implements IDaoDueños {
 
 	}
 
-	public Dueño find(IConexion con, int ced) throws PersistenciaException {
+	public Dueño find(IConexion con, int ced) throws PersistenciaException,
+			LogicaException {
 		Dueño due = null;
 		try {
 			// Abrimos el archivo
@@ -132,9 +134,9 @@ public class DaoDueñosArchivo implements IDaoDueños {
 		}
 		return list;
 	}
-	
+
 	private String nombreArchivo(int cedula) {
-		return new String(ruta + prefijo + Integer.toString(cedula) + extension); 
+		return new String(ruta + prefijo + Integer.toString(cedula) + extension);
 	}
 
 }

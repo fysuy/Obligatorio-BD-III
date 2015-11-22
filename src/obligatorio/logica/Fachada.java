@@ -13,6 +13,7 @@ import obligatorio.exceptions.MascotaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.valueObjects.VODueño;
 import obligatorio.logica.valueObjects.VOMascota;
+import obligatorio.persistencia.IAbstractFactory;
 import obligatorio.persistencia.daos.IDaoDueños;
 import obligatorio.util.IConexion;
 import obligatorio.util.IPoolConexiones;
@@ -36,11 +37,13 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 		try {
 			p.load(new FileInputStream(nomArch));
 			String pool = p.getProperty("logica.pool");
-			String daoDueño = p.getProperty("logica.daoDueno");
+			String concreteFactory = p.getProperty("logica.factory");
 			this.ipool = (IPoolConexiones) (Class.forName(pool).newInstance());
 
-			// TODO: cambiarlo por la factory!
-			this.dueños = (IDaoDueños) (Class.forName(daoDueño).newInstance());
+			IAbstractFactory factory = (IAbstractFactory) (Class
+					.forName(concreteFactory).newInstance());
+			this.dueños = factory.crearDaoDuenios();
+
 		} catch (InstantiationException | IllegalAccessException
 				| ClassNotFoundException | IOException e) {
 			throw new LogicaException(e.getMessage());
@@ -56,7 +59,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	}
 
 	public void nuevoDueño(VODueño dueño) throws DueñoException,
-			PersistenciaException {
+			PersistenciaException, LogicaException {
 		IConexion icon;
 		int ced = dueño.getCedula();
 		String nom = dueño.getNombre();
@@ -77,7 +80,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	}
 
 	public void nuevaMascota(VOMascota pMascota) throws PersistenciaException,
-			DueñoException, MascotaException {
+			DueñoException, MascotaException, LogicaException {
 		String apodo = pMascota.getApodo();
 		int cedulaDueño = pMascota.getCedulaDueño();
 		String raza = pMascota.getRaza();
@@ -116,7 +119,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	}
 
 	public List<VOMascota> listarMascotas(int cedulaDueño)
-			throws PersistenciaException, DueñoException {
+			throws PersistenciaException, DueñoException, LogicaException {
 		IConexion icon = ipool.obtenerConexion(true);
 		List<VOMascota> result;
 
@@ -132,7 +135,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	}
 
 	public void borrarDueñoMascotas(int cedulaDueño)
-			throws PersistenciaException, DueñoException {
+			throws PersistenciaException, DueñoException, LogicaException {
 		IConexion icon = ipool.obtenerConexion(true);
 
 		if (dueños.member(icon, cedulaDueño)) {
