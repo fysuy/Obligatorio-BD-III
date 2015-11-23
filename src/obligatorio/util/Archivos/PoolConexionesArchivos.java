@@ -31,7 +31,6 @@ public class PoolConexionesArchivos implements IPoolConexiones, Serializable {
 	}
 
 	public void liberarConexion(IConexion con, boolean ok) {
-		// TODO - Mail a la profe, usamos este get o una bandera como parametro.
 		if (monitor.getEscribiendo()) {
 			monitor.terminoEscritura();
 		} else {

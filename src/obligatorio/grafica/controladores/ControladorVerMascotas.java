@@ -30,7 +30,6 @@ public class ControladorVerMascotas {
 				data[i][2] = new Integer(mascotas.get(i).getCedulaDueño());
 			}
 		} else {
-			// TODO: no se puede devolver algo mejor? una exception o algo?
 			data = new Object[1][3];
 			data[0][0] = "";
 			data[0][1] = "";
@@ -39,5 +38,4 @@ public class ControladorVerMascotas {
 
 		return data;
 	}
-
 }
