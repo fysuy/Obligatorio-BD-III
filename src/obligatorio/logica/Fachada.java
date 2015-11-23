@@ -59,7 +59,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	}
 
 	public void nuevoDueño(VODueño dueño) throws DueñoException,
-			PersistenciaException, LogicaException {
+			PersistenciaException, LogicaException, RemoteException {
 		IConexion icon;
 		int ced = dueño.getCedula();
 		String nom = dueño.getNombre();
@@ -80,7 +80,7 @@ public class Fachada extends UnicastRemoteObject implements IFachada {
 	}
 
 	public void nuevaMascota(VOMascota pMascota) throws PersistenciaException,
-			DueñoException, MascotaException, LogicaException {
+			DueñoException, MascotaException, LogicaException, RemoteException {
 		String apodo = pMascota.getApodo();
 		int cedulaDueño = pMascota.getCedulaDueño();
 		String raza = pMascota.getRaza();

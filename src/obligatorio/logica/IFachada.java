@@ -15,7 +15,7 @@ import obligatorio.logica.valueObjects.VOMascota;
 public interface IFachada extends Remote {
 
 	public void nuevoDueño(VODueño dueño) throws DueñoException,
-			PersistenciaException, LogicaException;
+			PersistenciaException, LogicaException, RemoteException;
 
 	public void nuevaMascota(VOMascota pMascota) throws PersistenciaException,
 			DueñoException, RemoteException, MascotaException, IOException,
