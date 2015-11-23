@@ -8,6 +8,7 @@ import obligatorio.exceptions.MascotaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.IFachada;
 import obligatorio.logica.valueObjects.VOMascota;
+import obligatorio.util.ObjetoCliente;
 
 public class ControladorIngresarMascota {
 	private IFachada facade;
@@ -15,6 +16,7 @@ public class ControladorIngresarMascota {
 	public void ingresarMascota(int cedulaDueño, String apodo, String raza)
 			throws LogicaException, PersistenciaException, DueñoException,
 			MascotaException, RemoteException {
+		facade = ObjetoCliente.Inicializar();
 		VOMascota voMascota = new VOMascota(raza, apodo, cedulaDueño);
 		facade.nuevaMascota(voMascota);
 	}

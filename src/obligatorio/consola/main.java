@@ -45,11 +45,11 @@ public class main {
 
 			/* creo la tabla Mascotas */
 			String mascotas = "CREATE TABLE Dym.Mascotas "
-					+ "(apodo varchar (45) NOT NULL PRIMARY KEY, "
+					+ "(apodo varchar (45) NOT NULL, "
 					+ " cedulaDueño INT NOT NULL,"
 					+ " raza varchar (45) NOT NULL,"
-					+ " FOREIGN KEY (cedulaDueño) REFERENCES"
-					+ " Dym.Dueños(cedula))";
+					+ " FOREIGN KEY (cedulaDueño) REFERENCES Dym.Dueños(cedula)),"
+					+ " PRIMARY KEY (apodo,cedulaDueño)";
 
 			pstmt = (PreparedStatement) con.prepareStatement(mascotas);
 			pstmt.executeUpdate();

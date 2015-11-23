@@ -7,6 +7,7 @@ import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.IFachada;
 import obligatorio.logica.valueObjects.VODueño;
+import obligatorio.util.ObjetoCliente;
 
 public class ControladorVerDueños {
 
@@ -14,6 +15,7 @@ public class ControladorVerDueños {
 
 	public Object[][] listarDueños() throws LogicaException,
 			PersistenciaException, RemoteException {
+		facade = ObjetoCliente.Inicializar();
 		Object[][] data = null;
 
 		List<VODueño> dueños = facade.listarDueños();
