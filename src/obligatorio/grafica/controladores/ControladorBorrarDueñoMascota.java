@@ -5,14 +5,13 @@ import java.rmi.RemoteException;
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
-import obligatorio.logica.Fachada;
+import obligatorio.logica.IFachada;
 
 public class ControladorBorrarDueñoMascota {
-
+	private IFachada facade;
+	
 	public void borrarDueñoMascota(int cedula) throws LogicaException,
 			PersistenciaException, DueñoException, RemoteException {
-
-		// FIXME: cambiar por IFachada
-		Fachada.getInstance().borrarDueñoMascotas(cedula);
+		facade.borrarDueñoMascotas(cedula);
 	}
 }

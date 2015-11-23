@@ -6,16 +6,17 @@ import java.util.List;
 import obligatorio.exceptions.DueñoException;
 import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
-import obligatorio.logica.Fachada;
+import obligatorio.logica.IFachada;
 import obligatorio.logica.valueObjects.VOMascota;
 
 public class ControladorVerMascotas {
+	private IFachada facade;
 
 	public Object[][] listarMascotas(int cedula) throws LogicaException,
 			RemoteException, PersistenciaException, DueñoException {
 		Object[][] data = null;
 
-		List<VOMascota> mascotas = Fachada.getInstance().listarMascotas(cedula);
+		List<VOMascota> mascotas = facade.listarMascotas(cedula);
 		int total = mascotas.size();
 
 		if (total != 0) {

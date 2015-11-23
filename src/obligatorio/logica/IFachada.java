@@ -1,6 +1,5 @@
 package obligatorio.logica;
 
-import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -18,8 +17,7 @@ public interface IFachada extends Remote {
 			PersistenciaException, LogicaException, RemoteException;
 
 	public void nuevaMascota(VOMascota pMascota) throws PersistenciaException,
-			DueñoException, RemoteException, MascotaException, IOException,
-			LogicaException;
+			DueñoException, RemoteException, MascotaException, LogicaException;
 
 	public List<VODueño> listarDueños() throws PersistenciaException,
 			RemoteException;
