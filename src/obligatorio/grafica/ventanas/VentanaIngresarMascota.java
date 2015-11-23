@@ -154,9 +154,8 @@ public class VentanaIngresarMascota {
 							JOptionPane.showMessageDialog(frame,
 									"Mascota agregada.");
 
-							textFieldCedulaDueño.setText("");
-							textFieldRaza.setText("");
-							textFieldApodo.setText("");
+							frame.setVisible(false);
+							
 						} catch (LogicaException | PersistenciaException
 								| DueñoException | MascotaException
 								| RemoteException e) {
