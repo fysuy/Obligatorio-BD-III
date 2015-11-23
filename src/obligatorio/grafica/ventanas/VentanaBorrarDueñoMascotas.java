@@ -113,14 +113,12 @@ public class VentanaBorrarDueñoMascotas {
 
 						try {
 							controlador.borrarDueñoMascota(cedula);
-
-						} catch (LogicaException | RemoteException e) {
-
 							JOptionPane.showMessageDialog(frame,
 									"Se borró el dueño y todas sus mascotas.",
 									"Dueño borrado", JOptionPane.PLAIN_MESSAGE);
 							textFieldCedulaDueño.setText("");
-						} catch (PersistenciaException | DueñoException e) {
+							
+						} catch (PersistenciaException | DueñoException | LogicaException | RemoteException e) {
 
 							JOptionPane.showMessageDialog(frame, e.getMessage());
 						}

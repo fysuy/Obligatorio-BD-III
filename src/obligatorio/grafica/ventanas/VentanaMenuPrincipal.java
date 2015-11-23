@@ -46,7 +46,7 @@ public class VentanaMenuPrincipal {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
-		JLabel labelTitulo = new JLabel("Adivina la Mascota");
+		JLabel labelTitulo = new JLabel("Menú Principal");
 		labelTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitulo.setFont(new Font("Tahoma", Font.PLAIN, 34));
 		frame.getContentPane().add(labelTitulo, BorderLayout.NORTH);

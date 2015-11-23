@@ -18,10 +18,10 @@ public class main {
 			Properties p = new Properties();
 			String nomArch = "config/config.properties";
 			p.load(new FileInputStream(nomArch));
-			String driver = p.getProperty("driver");
-			String url = p.getProperty("url");
-			String user = p.getProperty("user");
-			String password = p.getProperty("password");
+			String driver = p.getProperty("persistencia.driver");
+			String url = p.getProperty("persistencia.url");
+			String user = p.getProperty("persistencia.user");
+			String password = p.getProperty("persistencia.password");
 
 			/* cargo el driver */
 			Class.forName(driver);
@@ -48,8 +48,8 @@ public class main {
 					+ "(apodo varchar (45) NOT NULL, "
 					+ " cedulaDueño INT NOT NULL,"
 					+ " raza varchar (45) NOT NULL,"
-					+ " FOREIGN KEY (cedulaDueño) REFERENCES Dym.Dueños(cedula)),"
-					+ " PRIMARY KEY (apodo,cedulaDueño)";
+					+ " FOREIGN KEY (cedulaDueño) REFERENCES Dym.Dueños(cedula),"
+					+ " PRIMARY KEY (apodo,cedulaDueño))";
 
 			pstmt = (PreparedStatement) con.prepareStatement(mascotas);
 			pstmt.executeUpdate();

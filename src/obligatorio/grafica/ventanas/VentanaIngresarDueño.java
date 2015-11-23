@@ -156,9 +156,7 @@ public class VentanaIngresarDueño {
 							JOptionPane.showMessageDialog(frame,
 									"Dueño creado.");
 
-							textFieldCedula.setText("");
-							textFieldNombre.setText("");
-							textFieldApellido.setText("");
+							frame.setVisible(false);
 
 						} catch (LogicaException | DueñoException
 								| PersistenciaException | RemoteException e) {
