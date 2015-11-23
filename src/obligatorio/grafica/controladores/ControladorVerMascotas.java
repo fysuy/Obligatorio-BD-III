@@ -8,12 +8,14 @@ import obligatorio.exceptions.LogicaException;
 import obligatorio.exceptions.PersistenciaException;
 import obligatorio.logica.IFachada;
 import obligatorio.logica.valueObjects.VOMascota;
+import obligatorio.util.ObjetoCliente;
 
 public class ControladorVerMascotas {
 	private IFachada facade;
 
 	public Object[][] listarMascotas(int cedula) throws LogicaException,
 			RemoteException, PersistenciaException, DueñoException {
+		facade = ObjetoCliente.Inicializar();
 		Object[][] data = null;
 
 		List<VOMascota> mascotas = facade.listarMascotas(cedula);
